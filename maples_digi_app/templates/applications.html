@@ -1,0 +1,25 @@
+{% extends 'base.html'%}
+{% block content %}
+<section class="container">
+   <div id="todo-header" class="row">
+      <a href="{{ url_for('applications.create_application') }}">
+         <button class="add_button">Create New Application</button>
+      </a>
+   </div>
+
+</section>
+
+<!-- <script>
+   function updateDate() {
+      const dateElement = document.querySelector(".calendar-fold");
+      const currentDate = new Date();
+      dateElement.textContent = currentDate.toLocaleString();
+      dateElement.classList.add("change-date");
+      setTimeout(() => {
+         dateElement.classList.remove("change-date");
+      }, 1000);
+   }
+
+   setInterval(updateDate, 5000); // Update the date every 5 seconds (adjust as needed)
+</script> -->
+{% endblock %}

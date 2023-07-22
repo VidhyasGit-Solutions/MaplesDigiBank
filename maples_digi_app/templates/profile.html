@@ -1,0 +1,55 @@
+{% extends 'base.html'%}
+{% block content %}
+<section class="container">
+   <div id=profile-form class="row">
+      <div class="col" a>
+         <!-- A column inside a row inside a container! -->
+         <form action="" method="post">
+            {{ form.csrf_token }}
+            <p>
+               {{ form.first_name.label }}<br>
+               {{ form.first_name(size=32) }}<br>
+               {% if form.first_name.errors %}
+               <span style="color: red;">{{ form.first_name.errors[0] }}</span>
+               {% endif %}
+            </p>
+            <p>
+               {{ form.last_name.label }}<br>
+               {{ form.last_name(size=32) }}<br>
+               {% if form.last_name.errors %}
+               <span style="color: red;">{{ form.last_name.errors[0] }}</span>
+               {% endif %}
+            </p>
+            <p>
+               {{ form.username.label }}<br>
+               {{ form.username(size=32) }}<br>
+               {% if form.username.errors %}
+               <span style="color: red;">{{ form.username.errors[0] }}</span>
+               {% endif %}
+            </p>
+
+            <p>
+               {{ form.email.label }}<br>
+               {{ form.email(size=32, style="color: white;", disabled=True) }}<br>
+               {% if form.email.errors %}
+               <span style="color: red;">{{ form.email.errors[0] }}</span>
+               {% endif %}
+            </p>
+
+            <p>
+               {{ form.password.label }}<br>
+               {{ form.password(size=32) }}<br>
+               {% if form.password.errors %}
+               <span style="color: red;">{{ form.password.errors[0] }}</span>
+               {% endif %}
+            </p>
+            <div class="row-1">
+               <p>{{ form.submit() }} <a href="/applications" class="cancel-button"
+                     style="padding: 10.5px 16px;">Cancel</a>
+               </p>
+            </div>
+         </form>
+      </div>
+   </div>
+</section>
+{% endblock %}
