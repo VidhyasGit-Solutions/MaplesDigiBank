@@ -1,0 +1,491 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    margin: 0;
+    padding: 0;
+    background-color: #150c0b;
+    /* background-image: url('/static/images/todo-application.png');
+    position: relative;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center; */
+}
+
+body::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Adjust the alpha value (0.5) to control the shade intensity */
+    z-index: -1;
+}
+
+/* .container {
+    max-width: 400px;
+    margin: 50px auto;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+} */
+
+header {
+    padding: 20px 0;
+
+}
+
+
+header .row {
+    display: flex;
+    align-items: center;
+}
+
+/* header h1 {
+    font-weight: 700;
+    margin: 0;
+    color: blue;
+} */
+
+header nav {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* header p {
+    padding: 0 20px;
+    margin: 0;
+    color: blue;
+} */
+
+#round {
+    border-radius: 25px;
+    border: 2px solid #00bfff;
+    padding: 20px;
+    background: black;
+}
+
+#app-logo {
+    color: #87ceeb
+}
+
+/*
+White: #ffffff
+Gold: #ffd700
+Silver: #c0c0c0
+Teal: #008080
+Coral: #ff7f50
+Plum: #dda0dd
+Lime Green: #32cd32
+Sky Blue: #87ceeb
+Orange: #ffa500
+Magenta: #ff00ff */
+
+#todo-header {
+    border-radius: 25px;
+    border: 2px solid #00bfff;
+    padding: 20px;
+    background: black;
+}
+
+#login-form {
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    height: 30%;
+    min-height: 50vh;
+    position: relative;
+    left: 30%;
+
+    max-width: 500px;
+    /* margin: 50px auto; */
+    background-color: rgb(203, 178, 106);
+    border-radius: 5px;
+    padding: 20px;
+    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+}
+
+#login-logo {
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    height: 50%;
+    min-height: 20vh;
+    position: relative;
+    left: 0%;
+}
+
+#search-header {
+    width: 30%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+
+}
+
+#register-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 62%;
+    padding: 30px;
+    position: relative;
+    left: 30%;
+    max-width: 500px;
+    /* margin: 50px auto; */
+    background-color: rgb(203, 178, 106);
+    border-radius: 5px;
+}
+
+.add_button {
+    border-radius: 25px;
+    color: blue;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: fuchsia;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    background-color: #45a049;
+    font-weight: bold;
+}
+
+li,
+p {
+    color: #fff
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: visible;
+}
+
+
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.add_boxbutton {
+    border-radius: 10px;
+    color: blue;
+    padding: 10px 18px;
+    text-align: center;
+    text-decoration: fuchsia;
+    display: inline-block;
+    font-size: 16px;
+    margin: 2px 2px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* CSS for error messages */
+.error {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.error-container {
+    margin-bottom: 16px;
+}
+
+/* CSS for flash messages */
+.flash-messages {
+    list-style-type: none;
+    padding: 0;
+}
+
+.flash-messages li {
+    color: #fff;
+    background-color: #e74c3c;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    display: inline;
+}
+
+
+
+input[type="email"],
+input[name="email"],
+input[type="password"],
+input[name="username"],
+input[name="first_name"],
+input[name="last_name"] {
+    /* width: 70%;
+    padding: 8px; */
+    padding: 10px 20px;
+    /* margin: 8px 0; */
+    box-sizing: border-box;
+    /* border: 1px solid #ccc; */
+    border-radius: 4px;
+
+    border: none;
+    cursor: pointer;
+    width: 100%;
+
+
+}
+
+#profile-form {
+    width: 40%;
+    padding: 8px;
+    padding: 10px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    /* border: 1px solid #ccc; */
+}
+
+/* input[type="date"],
+input[name="task_name"],
+input[name="username"],
+textarea {
+    width: 30%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+} */
+
+/* .form-control {
+    width: 25%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+} */
+.form-control {
+    display: block;
+    width: 40%;
+    height: calc(2.25rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+
+input[name="description"],
+textarea {
+    width: 50%;
+    height: 50%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+label {
+    font-weight: bold;
+    color: #fff
+}
+
+[type="submit"],
+.cancel-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+}
+
+.cancel-button {
+    background-color: #f44336;
+}
+
+.cancel-button:hover {
+    background-color: #d32f2f;
+}
+
+/* .css-11b3zdj {
+    background: rgb(255, 255, 255);
+    display: inline-block;
+    overflow: hidden;
+    border-radius: 2px;
+    border: 1px solid rgb(214, 217, 224);
+    font-family: Lato;
+    max-width: 500px;
+    position: absolute;
+    left: calc(50% - 250px);
+    top: calc(50% - 276px);
+    transform: scale(1.4496);
+    width: 500px;
+    height: 554px;
+} */
+select {
+    text-transform: none;
+    width: 30%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+a {
+    font-weight: bold;
+}
+
+/* .css-1nzqqoi {
+    -webkit-text-size-adjust: 100%;
+    color: rgb(9, 11, 23);
+    font-family: Lato;
+    box-sizing: border-box;
+    height: 50px;
+    text-align: left;
+} */
+
+
+/* .css-11b3zdj {
+    -webkit-text-size-adjust: 100%;
+    color: rgb(9, 11, 23);
+    font-family: Lato;
+    box-sizing: border-box;
+    position: relative;
+} */
+
+/* .css-1nzqqoi {
+    -webkit-text-size-adjust: 100%;
+    color: rgb(9, 11, 23);
+    font-family: Lato;
+    box-sizing: border-box;
+    text-align: left;
+    width: 67px;
+    height: 67px;
+} */
+/*
+.css-34exso {
+    -webkit-text-size-adjust: 100%;
+    color: rgb(9, 11, 23);
+    font-family: Lato;
+    text-align: left;
+    box-sizing: border-box;
+    position: relative;
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    width: 67px;
+    height: 67px;
+    margin-top: 23px;
+    margin-left: 20px;
+    z-index: 1;
+} */
+
+/* .css-1lw9fx4 {
+    -webkit-text-size-adjust: 100%;
+    font-family: Lato;
+    position: absolute;
+    top: 36px;
+    width: 100%;
+    text-align: right;
+    z-index: 1;
+    padding: 0px 15px 0px 20px;
+    box-sizing: border-box;
+    color: rgb(255, 255, 255);
+} */
+
+
+.css-16i2xin {
+    -webkit-text-size-adjust: 100%;
+    font-family: Lato;
+    text-align: right;
+    color: rgb(255, 255, 255);
+    box-sizing: border-box;
+    display: inline-block;
+    margin: 0px 7px;
+    font-size: 11px;
+}
+
+.css-1ib0job {
+    -webkit-text-size-adjust: 100%;
+    font-family: Lato;
+    text-align: right;
+    box-sizing: border-box;
+    display: inline-block;
+    padding: 4px 10px;
+    background: rgb(203, 178, 106);
+    color: rgb(255, 255, 255);
+    font-size: 11px;
+    margin: 4px 0px 0px 12px;
+}
+
+.css-16i2xin a {
+    color: white;
+    font-size: 30px;
+}
+
+.css-1ib0job a {
+    color: white;
+    font-size: 20px;
+}
+
+/* Styles for the drop-down menu */
+.dropdown {
+    position: relative;
+    display: inline-block;
+
+}
+
+.profile-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.dropbtn {
+    background-color: transparent;
+    color: white;
+    font-size: 16px;
+    border: none;
+    /* cursor: pointer; */
+}
+
+.mat-menu-item span {
+    white-space: normal;
+    text-align: left;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    transform: translateX(-50%);
+}
+
+.dropdown-content a {
+    color: rgb(214, 231, 27);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    text-align: left;
+
+}
