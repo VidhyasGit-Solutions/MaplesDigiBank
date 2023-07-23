@@ -6,7 +6,7 @@ Steps to run:
 
 1. Install the python package
  ```bash
- pip install -r requirements.txt
+ pip install -r requirement.txt
  ```
 
 2. Create the Mysql database
