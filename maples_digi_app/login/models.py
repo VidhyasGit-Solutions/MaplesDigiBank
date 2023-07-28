@@ -2,7 +2,7 @@ from datetime import datetime
 
 from flask_login import UserMixin
 from maples_digi_app import db
-from sqlalchemy import CheckConstraint
+from sqlalchemy import BigInteger, CheckConstraint
 
 
 class User(db.Model, UserMixin):
@@ -22,13 +22,128 @@ class User(db.Model, UserMixin):
         db.DateTime, default=datetime.now, onupdate=datetime.now
     )
 
-    # # Foreign keys
-    # employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'))
-    # customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))
+    # # # Foreign keys
+    # # employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'))
+    # # customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))
 
-    # # Define relationships with Employee and Customer tables
-    # employee = db.relationship('Employee', backref='owner', uselist=False)
-    # customer = db.relationship('Customer', backref='owner', uselist=False)
+    # # # Define relationships with Employee and Customer tables
+    # # employee = db.relationship('Employee', backref='owner', uselist=False)
+    # # customer = db.relationship('Customer', backref='owner', uselist=False)
+
+    # customers = db.relationship("Customer", backref="user", lazy=True)
+    # employees = db.relationship("Employee", backref="user", lazy=True)
+
+    user_association = db.relationship(
+        "UserAssociation", back_populates="user", uselist=False
+    )
 
     def __repr__(self):
         return f"User{self.username}{self.email}"
+
+
+class UserAssociation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    customer_id = db.Column(
+        db.String(50), db.ForeignKey("customer.passport_no")
+    )
+    employee_id = db.Column(db.Integer, db.ForeignKey("employee.id"))
+
+    # user = db.relationship(
+    #     "User", backref="associations", foreign_keys=[user_id]
+    # )
+    # customer = db.relationship(
+    #     "Customer", backref="associations", foreign_keys=[customer_id]
+    # )
+    # employee = db.relationship(
+    #     "Employee", backref="associations", foreign_keys=[employee_id]
+    # )
+    user = db.relationship(
+        "User", backref="associations", foreign_keys=[user_id], viewonly=True
+    )
+    customer = db.relationship(
+        "Customer",
+        backref="associations",
+        foreign_keys=[customer_id],
+        viewonly=True,
+    )
+    employee = db.relationship(
+        "Employee",
+        backref="associations",
+        foreign_keys=[employee_id],
+        viewonly=True,
+    )
+
+
+class Customer(db.Model, UserMixin):
+    passport_no = db.Column(db.String(50), primary_key=True)
+    userid = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    first_name = db.Column(db.String(255))
+    middle_name = db.Column(db.String(255))
+    last_name = db.Column(db.String(255))
+    sin = db.Column(db.Text)
+    date_of_birth = db.Column(db.Date)
+    address_line1 = db.Column(db.Text)
+    address_line2 = db.Column(db.Text)
+    city = db.Column(db.String(255))
+    province = db.Column(db.String(255))
+    postal_code = db.Column(db.String(20))
+    country = db.Column(db.String(255))
+    mobile_no = db.Column(BigInteger, nullable=False)
+    nationality = db.Column(db.String(255))
+    occupation = db.Column(db.String(255))
+    signature = db.Column(db.Text)
+    created_date = db.Column(db.DateTime, default=datetime.now)
+    updated_date = db.Column(
+        db.DateTime, default=datetime.now, onupdate=datetime.now
+    )
+    account_type = db.Column(db.String(50))
+
+    user = db.relationship(
+        "UserAssociation", back_populates="customer", uselist=False
+    )
+
+    @property
+    def emailid(self):
+        return self.user.email if self.user else None
+
+    def __repr__(self):
+        return f"Customer {self.passport_no} {self.address_line1} {self.address_line2} {self.city} {self.postal_code} {self.mobile_no} {self.date_of_birth}"
+
+
+class Employee(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    userid = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    first_name = db.Column(db.String(255))
+    last_name = db.Column(db.String(255))
+    middle_name = db.Column(db.String(255))
+    date_of_birth = db.Column(db.Date)
+    date_of_joining = db.Column(db.Date)
+    bank_name = db.Column(db.String(255))
+    instituion_no = db.Column(db.String(255))
+    addressline1 = db.Column(db.Text)
+    addressline2 = db.Column(db.Text)
+    city = db.Column(db.String(255))
+    province = db.Column(db.String(255))
+    postal_code = db.Column(db.String(20))
+    country = db.Column(db.String(255))
+    mobile_no = db.Column(BigInteger, nullable=False)
+    designation = db.Column(db.String(255))
+    auth_to_approve = db.Column(db.Boolean)
+    manager_id = db.Column(db.Integer)
+    signature = db.Column(db.Text)
+    created_date = db.Column(db.DateTime, default=datetime.now)
+    updated_date = db.Column(
+        db.DateTime, default=datetime.now, onupdate=datetime.now
+    )
+
+    user = db.relationship(
+        "UserAssociation", back_populates="employee", uselist=False
+    )
+
+    @property
+    def emailid(self):
+        return self.user.email if self.user else None
+
+    def __repr__(self):
+        return f"Employee {self.id} {self.first_name} {self.last_name} {self.date_of_birth} {self.date_of_joining} {self.designation}"

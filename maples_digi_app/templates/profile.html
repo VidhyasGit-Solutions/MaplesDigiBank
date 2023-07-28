@@ -43,10 +43,10 @@
                <span style="color: red;">{{ form.password.errors[0] }}</span>
                {% endif %}
             </p>
+
             <div class="row-1">
-               <p>{{ form.submit() }} <a href="/applications" class="cancel-button"
-                     style="padding: 10.5px 16px;">Cancel</a>
-               </p>
+               <p style="display: inline-block;">{{ form.submit() }}</p>
+               <a href="/applications" class="cancel-button" style="display: inline-block; ">Cancel</a>
             </div>
          </form>
       </div>
