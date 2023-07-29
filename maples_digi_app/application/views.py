@@ -24,7 +24,7 @@ def application():
 
     if not customer:
         # Handle case if customer doesn't exist
-        logger.warn("Customer not found")
+        logger.warning("Customer not found")
         return render_template(
             "applications.html", customer=None, applications=[]
         )

@@ -9,7 +9,7 @@ def get_customer_data():
         if customer:
             return customer
         else:
-            logger.warn("Customer data not found.")
+            logger.warning("Customer data not found.")
             return None
     else:
         # Handle case if user is not authenticated
