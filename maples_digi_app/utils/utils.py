@@ -1,6 +1,6 @@
 from flask_login import current_user
 from loguru import logger
-from maples_digi_app.login.models import Customer
+from maples_digi_app.login.models import Customer, Employee
 
 
 def get_customer_data():
@@ -14,4 +14,17 @@ def get_customer_data():
     else:
         # Handle case if user is not authenticated
         logger.error(f"{current_user} User not authenticated")
+        return None
+
+def get_employee_data():
+    if current_user.is_authenticated:
+        employee = Employee.query.filter_by(userid=current_user.id).first()
+        if employee:
+            return employee
+        else:
+            logger.warning("employee data not found.")
+            return None
+    else:
+        # Handle case if user is not authenticated
+        logger.error(f"{current_user} Employee not authenticated")
         return None

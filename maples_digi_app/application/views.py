@@ -1,7 +1,8 @@
-from flask import Blueprint, abort, redirect, render_template, request, url_for
+from flask import Blueprint, abort, redirect, render_template, request, url_for, session
 from flask_login import current_user
 from loguru import logger
 from maples_digi_app.application.forms import CustomerForm, EmployeeForm
+from maples_digi_app.creditcheck.forms import CreditCheck_CustomerForm
 from maples_digi_app.application.models import Application, StatusEnum
 from maples_digi_app.login.models import Customer, Employee
 from maples_digi_app.utils.utils import get_customer_data
@@ -21,12 +22,14 @@ def application():
     customer = get_customer_data()
     # logger.debug(f"Applications {result} hehe")
     # customer = Customer.query.filter_by(userid=current_user.id).first()
+    userrole = session.get('userrole')  # Access the 'userrole' session variable
+    print("Session Variable - userrole :",userrole)
 
     if not customer:
         # Handle case if customer doesn't exist
-        logger.warning("Customer not found")
+        logger.warning("Employee found")
         return render_template(
-            "applications.html", customer=None, applications=[]
+            "applications.html", customer=None, applications=[], userrole=userrole
         )
     applications = Application.query.filter_by(
         customer_id=customer.passport_no
@@ -35,6 +38,15 @@ def application():
     return render_template(
         "applications.html", customer=customer, applications=applications
     )
+
+@applications.route("/credit_score_check", methods=["GET", "POST"])
+def credit_score_check():
+    logger.debug(f"Credit_score_check{current_user.id}")
+    form = CreditCheck_CustomerForm()
+
+    return render_template(
+        "credit_scorecheck.html", form=form)
+
 
 
 @applications.route("/create_application", methods=["GET", "POST"])

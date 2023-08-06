@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import Blueprint, flash, jsonify, redirect, render_template, request
+from flask import Blueprint, flash, jsonify, redirect, render_template, request, session
 from flask_login import current_user, login_user, logout_user
 from loguru import logger
 from maples_digi_app.login.forms import LoginForm, ProfileForm, RegisterForm
@@ -22,6 +22,7 @@ def login():
         username_or_email = form.email.data
         password = form.password.data
         role = form.role_type.data
+        session['userrole'] = role
         user = None
         if "@" in username_or_email:
             user = User.query.filter_by(

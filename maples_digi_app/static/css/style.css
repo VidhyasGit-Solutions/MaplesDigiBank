@@ -12,17 +12,17 @@ body {
 }
 
 
-body::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    /* Adjust the alpha value (0.5) to control the shade intensity */
-    z-index: -1;
-}
+    body::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        /* Adjust the alpha value (0.5) to control the shade intensity */
+        z-index: -1;
+    }
 
 /* .container {
     max-width: 400px;
@@ -35,14 +35,13 @@ body::after {
 
 header {
     padding: 20px 0;
-
 }
 
 
-header .row {
-    display: flex;
-    align-items: center;
-}
+    header .row {
+        display: flex;
+        align-items: center;
+    }
 
 h1 {
     font-weight: 700;
@@ -99,7 +98,6 @@ Magenta: #ff00ff */
     min-height: 50vh;
     position: relative;
     left: 30%;
-
     max-width: 500px;
     /* margin: 50px auto; */
     background-color: rgb(203, 178, 106);
@@ -123,7 +121,6 @@ Magenta: #ff00ff */
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
-
 }
 
 .gold-background {
@@ -182,9 +179,9 @@ button {
 
 
 
-button:hover {
-    background-color: #0056b3;
-}
+    button:hover {
+        background-color: #0056b3;
+    }
 
 .add_boxbutton {
     border-radius: 10px;
@@ -216,16 +213,16 @@ button:hover {
     padding: 0;
 }
 
-.flash-messages li {
-    color: #fff;
-    background-color: #e74c3c;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    display: inline;
-}
+    .flash-messages li {
+        color: #fff;
+        background-color: #e74c3c;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        display: inline;
+    }
 
 
 
@@ -242,12 +239,9 @@ input[name="last_name"] {
     box-sizing: border-box;
     /* border: 1px solid #ccc; */
     border-radius: 4px;
-
     border: none;
     cursor: pointer;
     width: 100%;
-
-
 }
 
 #profile-form {
@@ -332,12 +326,11 @@ label {
     padding: 8px 16px;
     border-radius: 4px;
     color: white;
-
 }
 
-.cancel-button:hover {
-    background-color: #d32f2f;
-}
+    .cancel-button:hover {
+        background-color: #d32f2f;
+    }
 
 /* .css-11b3zdj {
     background: rgb(255, 255, 255);
@@ -465,7 +458,6 @@ a {
 .dropdown {
     position: relative;
     display: inline-block;
-
 }
 
 .profile-icon {
@@ -496,20 +488,51 @@ a {
     transform: translateX(-50%);
 }
 
-.dropdown-content a {
-    color: rgb(214, 231, 27);
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
+    .dropdown-content a {
+        color: rgb(214, 231, 27);
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
 
-}
-
-.dropdown-content a:hover {
-    background-color: #f1f1f1;
-}
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
 
 .dropdown:hover .dropdown-content {
     display: block;
     text-align: left;
+}
 
+.creditcheck_h1 {
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    text-align: left;
+    font-size: 20px;
+}
+
+#creditcheck_customerForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90%;
+    padding: 30px;
+    position: relative;
+    left: 20%;
+    max-width: 700px;
+    /* margin: 50px auto; */
+    background-color: rgb(203, 178, 106);
+    border-radius: 5px;
+}
+
+#creditcheck_button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 40%;
+    box-sizing: border-box;
+    overflow: visible;
 }
