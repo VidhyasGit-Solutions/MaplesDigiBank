@@ -294,11 +294,6 @@ textarea {
     border-radius: 4px;
 }
 
-label {
-    font-weight: bold;
-    color: #fff
-}
-
 [type="submit"] {
     background-color: #4caf50;
     color: white;
@@ -507,7 +502,6 @@ a {
 .creditcheck_h1 {
     font-family: 'Roboto', sans-serif;
     font-weight: bold;
-    text-align: left;
     font-size: 20px;
 }
 
@@ -536,3 +530,33 @@ a {
     box-sizing: border-box;
     overflow: visible;
 }
+
+body {
+    background-color: black;
+    color: white;
+}
+
+.table {
+    color: white; /* Font color for table content */
+    background-color: #333; /* Dark background color for the table */
+}
+
+    .table thead th {
+        color: white; /* Font color for table header cells */
+        background-color: #555; /* Dark background color for table header */
+    }
+
+.table-bordered th,
+.table-bordered td {
+    border-color: #777; /* Border color for table cells */
+}
+
+/* Custom styling for links within the table */
+.table a {
+    color: #87CEFA; /* Light blue color for links */
+    text-decoration: none;
+}
+
+    .table a:hover {
+        color: #ADD8E6; /* Light blue color for links on hover */
+    }

@@ -103,12 +103,12 @@ class Customer(db.Model, UserMixin):
         "UserAssociation", back_populates="customer", uselist=False
     )
 
-    @property
-    def emailid(self):
-        return self.user.email if self.user else None
+    #@property
+    #def emailid(self):
+        #return self.user. if self.user else None
 
     def __repr__(self):
-        return f"Customer {self.passport_no} {self.address_line1} {self.address_line2} {self.city} {self.postal_code} {self.mobile_no} {self.date_of_birth}"
+        return f"Customer {self.passport_no} {self.address_line1} {self.address_line2} {self.city} {self.province} {self.postal_code} {self.country} {self.mobile_no} {self.date_of_birth} {self.sin} {self.first_name} {self.last_name}"
 
 
 class Employee(db.Model):
@@ -146,4 +146,4 @@ class Employee(db.Model):
         return self.user.email if self.user else None
 
     def __repr__(self):
-        return f"Employee {self.id} {self.first_name} {self.last_name} {self.date_of_birth} {self.date_of_joining} {self.designation}"
+        return f"Employee {self.id} {self.first_name} {self.last_name} {self.date_of_birth} {self.date_of_joining} {self.designation} {self.auth_to_approve}"

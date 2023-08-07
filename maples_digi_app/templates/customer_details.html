@@ -1,0 +1,99 @@
+{% extends 'base.html'%}
+{% block content%}
+<section class="container">
+    <div>
+        <div class="col">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul class="flash-messages">
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            <p class="creditcheck_h1"> Credit Check Customer Form</p>
+            <form action="{{ url_for('creditchecks.credit_score_submit') }}" method="post">
+                {{ form.csrf_token }}
+                <div class="row">
+                    <p>
+                        National Identification Number :
+                        {{ form.nin_fetch }}<br>
+                        {% if form.nin_fetch.errors %}
+                        <span style="color: red;">{{ form.nin_fetch.errors[0] }}</span>
+                        {% endif %}
+                    </p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <p>
+                        Full Legal Name :
+                        {{ form.full_name_fetch }}<br>
+                        {% if form.full_name_fetch.errors %}
+                        <span style="color: red;">{{ form.full_name_fetch.errors[0] }}</span>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="row">
+                    <p>
+                        Date of Birth :
+                        {{ form.date_of_birth_fetch }}<br>
+                        {% if form.date_of_birth_fetch.errors %}
+                        <span style="color: red;">{{ form.date_of_birth_fetch.errors[0] }}</span>
+                        {% endif %}
+                    </p>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <p>
+                        Address Line1 :
+                        {{ form.address_line1_fetch }}<br>
+                        {% if form.address_line1_fetch.errors %}
+                        <span style="color: red;">{{ form.address_line1_fetch.errors[0] }}</span>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="row">
+                    <p>
+                        Address Line2 :
+                        {{ form.address_line2_fetch }}
+                        {% if form.address_line2_fetch.errors %}
+                        <span style="color: red;">{{ form.address_line2_fetch.errors[0] }}</span>
+                        {% endif %}
+                    </p>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <p>
+                        City :
+                        {{ form.city_fetch }}
+                        {% if form.city_fetch.errors %}
+                        <span style="color: red;">{{ form.city_fetch.errors[0] }}</span>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="row">
+                    <p>
+                        Province :
+                        {{ form.province_fetch }}
+                        {% if form.province_fetch.errors %}
+                        <span style="color: red;">{{ form.province_fetch.errors[0] }}</span>
+                        {% endif %}
+                    </p>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <p>
+                        Postal Code :
+                        {{ form.postal_code_fetch }}
+                        {% if form.postal_code_fetch.errors %}
+                        <span style="color: red;">{{ form.postal_code_fetch.errors[0] }}</span>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="row">
+                    <p>
+                        Country :
+                        {{ form.country_fetch }}
+                        {% if form.country_fetch.errors %}
+                        <span style="color: red;">{{ form.country_fetch.errors[0] }}</span>
+                        {% endif %}
+                    </p>&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+                <div class="row">
+                    <p>{{ form.submit() }}</p>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

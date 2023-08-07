@@ -65,18 +65,34 @@
             padding: 0px 10px;
         }
     </style>
+    <div class="container">
+        <div class="col">
+            <div>
+                {{ message }}
+            </div>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul class="flash-messages">
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
     {% if applications|length == 0 %}
     <div id="application-header" class="row">
         <a href="{{ url_for('applications.create_application') }}">
             <button class="add_button">Create New Application</button>
         </a>&nbsp;&nbsp;&nbsp;
         {% if userrole == "employee" %}
-        <a href="{{ url_for('applications.credit_score_check') }}">
+        <a href="{{ url_for('applications.customer_list') }}">
             <button class="add_button">Credit Score Check</button>
         </a>
         {% endif %}
     </div>
-   {% else %}
+    {% else %}
     <div class="container">
         <div class="header">
             <h1>Welcome {{ customer.first_name }} {{ customer.last_name }}</h1>

@@ -1,57 +1,43 @@
 from flask_wtf import FlaskForm
-from wtforms import DateField, FileField, IntegerField, SelectField, StringField, SubmitField
+from wtforms import DateField, FileField, IntegerField, SelectField, StringField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, ValidationError
 from maples_digi_app.login.models import Customer
 
 # from wtforms.validators import ValidationError
 
 class CreditCheck_CustomerForm(FlaskForm):
-    full_name = StringField(
-        "Full Legal Name",
-        render_kw={"placeholder": "Enter your Full Legal Name"},
-        validators=[DataRequired()],
+    full_name_fetch = StringField(
+       'Full Legal Name',
+        validators=[DataRequired()]
     )
     
-    date_of_birth = DateField(
+    date_of_birth_fetch = DateField(
         "Date of Birth", format="%Y-%m-%d",
-        render_kw={"placeholder": "Enter your Date of Birth"},
         validators=[DataRequired()]
     )
 
-    nin = StringField("National Identification Number",
-        render_kw={"placeholder": "Enter your National Identification Number"},
+    nin_fetch = StringField("National Identification Number", validators=[DataRequired()])
+    
+    address_line1_fetch = StringField("Address Line 1", 
         validators=[DataRequired()]
     )
-    email = StringField("Email",
-        render_kw={"placeholder": "Enter your Email"},
-        validators=[DataRequired()]
-    )
-    address_line1 = StringField("Address Line 1", 
-        render_kw={"placeholder": "Enter your Address"},
-        validators=[DataRequired()]
-    )
-    address_line2 = StringField("Address Line 2",
-         render_kw={"placeholder": "Enter your Address"},
+    address_line2_fetch = StringField("Address Line 2",
          validators=[DataRequired()]
     )
-    city = StringField("City",
-         render_kw={"placeholder": "Enter your City"},
+    city_fetch = StringField("City",
          validators=[DataRequired()]
     )
-    province = StringField("Province",
-         render_kw={"placeholder": "Enter your Province"},
+    province_fetch = StringField("Province",
          validators=[DataRequired()]
     )
-    postal_code = StringField("Postal Code",
-         render_kw={"placeholder": "Enter your Postal Code"},
+    postal_code_fetch = StringField("Postal Code",
          validators=[DataRequired()]
     )
-    country = StringField("Country",
-         render_kw={"placeholder": "Enter your Address"},
+    country_fetch = StringField("Country",
          validators=[DataRequired()]
     )   
 
-    submit = SubmitField("CreditCheck")
+    submit = SubmitField("Credit Check")
 
     def validate_nin(self, nin):
         existing_user = Customer().query.filter_by(sin=nin.data).first()
@@ -59,3 +45,35 @@ class CreditCheck_CustomerForm(FlaskForm):
             raise ValidationError(
                 "Customer does not Exist, Please provide the registered Customer infomration."
             )
+
+class CreditCheck_SubmitForm(FlaskForm):
+    credit_score = StringField(
+       'Credit Score',
+        validators=[DataRequired()]
+    )
+    
+    credit_utilize = StringField(
+        "Credit Utilization",
+        validators=[DataRequired()]
+    )
+
+    credit_length = StringField("Credit Length in Years", 
+        validators=[DataRequired()]
+    )
+    derogatory = StringField("Any Derogatory Marks",
+         validators=[DataRequired()]
+    )
+    eq_cad_score = StringField("Equivalent Canadian Credit Score",
+         validators=[DataRequired()]
+    )
+    validated_on = DateField("Validated On",
+         format="%Y-%m-%d",
+         validators=[DataRequired()]
+    )
+    comments = StringField("Credit Report Result",
+         validators=[DataRequired()]
+    )
+
+    
+    submit = SubmitField("Credit Report Save")
+
