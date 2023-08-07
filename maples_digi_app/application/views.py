@@ -4,7 +4,7 @@ from loguru import logger
 from maples_digi_app.application.forms import CustomerForm, EmployeeForm
 from maples_digi_app.creditcheck.forms import CreditCheck_CustomerForm
 from maples_digi_app.application.models import Application, StatusEnum
-from maples_digi_app.login.models import Customer, Employee
+from maples_digi_app.login.models import Customer, Employee, UserAssociation
 from maples_digi_app.utils.utils import get_customer_data
 
 applications = Blueprint("applications", __name__)
@@ -39,13 +39,25 @@ def application():
         "applications.html", customer=customer, applications=applications
     )
 
-@applications.route("/credit_score_check", methods=["GET", "POST"])
-def credit_score_check():
-    logger.debug(f"Credit_score_check{current_user.id}")
-    form = CreditCheck_CustomerForm()
+@applications.route("/customer_list", methods=["GET", "POST"])
+def customer_list():
+    logger.debug(f"Customer{current_user.id}")
+    from maples_digi_app import db
+    # Retrieve list of customer ids associated with the current user
+    print("Current User ID :", current_user.id)
+    customer_ids  = UserAssociation.query.with_entities(UserAssociation.customer_id).filter_by(user_id=current_user.id).all()
+    print("Fetched customer_ids :", customer_ids)
+    # Retrieve customer IDs associated with the current employee (user)
+    print("Fetched customer_ids :", customer_ids)
+    
+    # Fetch customers associated with the list of customer IDs
+    # Convert the list of tuples to a list of customer IDs
+    customer_ids = [customer_id[0] for customer_id in customer_ids]
 
-    return render_template(
-        "credit_scorecheck.html", form=form)
+    # Now you can use the list of customer IDs for further processing, e.g., fetching customers
+    customers = Customer.query.filter(Customer.passport_no.in_(customer_ids)).all()
+
+    return render_template("customer_list.html", customers=customers)
 
 
 

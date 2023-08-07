@@ -1,0 +1,93 @@
+{% extends 'base.html'%}
+{% block content%}
+<section class="container">
+    <div>
+        <div class="col">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul class="flash-messages">
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            <p class="creditcheck_h1"> Credit Report for the Customer</p>
+            <form action="{{ url_for('creditchecks.credit_score_save_submit') }}" method="post">
+                {{ form.csrf_token }}
+                <div class="row">
+                    <p>
+                        {{ form.credit_score.label }}<br>
+                        {{ form.credit_score }}<br>
+                        {% if form.credit_score.errors %}
+                        <span style="color: red;">{{ form.credit_score.errors[0] }}</span>
+                        {% endif %}
+                    </p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <p>
+                        {{ form.credit_utilize.label }}<br>
+                        {{ form.credit_utilize }}<br>
+                        {% if form.credit_utilize.errors %}
+                        <span style="color: red;">{{ form.credit_utilize.errors[0] }}</span>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="row">
+                    <p>
+                        {{ form.credit_length.label }}<br>
+                        {{ form.credit_length }}<br>
+                        {% if form.credit_length.errors %}
+                        <span style="color: red;">{{ form.credit_length.errors[0] }}</span>
+                        {% endif %}
+                    </p>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <p>
+                        {{ form.derogatory.label }}<br>
+                        {{ form.derogatory }}<br>
+                        {% if form.derogatory.errors %}
+                        <span style="color: red;">{{ form.derogatory.errors[0] }}</span>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="row">
+                    <p>
+                        {{ form.eq_cad_score.label }}<br>
+                        {{ form.eq_cad_score }}
+                        {% if form.eq_cad_score.errors %}
+                        <span style="color: red;">{{ form.eq_cad_score.errors[0] }}</span>
+                        {% endif %}
+                    </p>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <p>
+                        {{ form.validated_on.label }}<br>
+                        {{ form.validated_on }}
+                        {% if form.validated_on.errors %}
+                        <span style="color: red;">{{ form.validated_on.errors[0] }}</span>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="row">
+                    <p>
+                        {{ form.comments.label }}<br>
+                        {{ form.comments(size=80) }}
+                        {% if form.comments.errors %}
+                        <span style="color: red;">{{ form.comments.errors[0] }}</span>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="row">
+                    <p>{{ form.submit() }}</p>
+                </div>
+            </form>
+            <!-- Render the gauge chart using JavaScript -->
+            <div id="gauge-chart"></div>
+
+            <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+            <script>
+            // Get the chart data from the JSON string
+            var chartData = {{ chart_json|safe }};
+
+            // Render the gauge chart using Plotly
+            Plotly.newPlot('gauge-chart', chartData.data, chartData.layout);
+            </script>
+        </div>
+</section>
+{% endblock %}
