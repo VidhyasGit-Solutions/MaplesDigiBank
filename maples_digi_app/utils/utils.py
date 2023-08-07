@@ -19,6 +19,7 @@ def get_customer_data():
 def get_employee_data():
     if current_user.is_authenticated:
         employee = Employee.query.filter_by(userid=current_user.id).first()
+        print("Inside get_employee_data", employee)
         if employee:
             return employee
         else:

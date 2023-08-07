@@ -1,23 +1,15 @@
 {% extends 'base.html'%}
 {% block content%}
-<div class="container">
-   <!--Add your rows below:-->
-   <div class="row">
-      <div class="col">
-
-      </div>
-   </div>
-</div>
-
 <section class="container">
-   <!-- {% if not current_user.is_authenticated %}
-   <script>
-      window.location.href = "{{ url_for('logins.login') }}";
-   </script>
-   {% else %} -->
-   <script>
-      window.location.href = "{{ url_for('applications.application') }}";
-   </script>
-   <!-- {% endif %} -->
+    <!-- {% if not current_user.is_authenticated %}
+    <script>
+        window.location.href = "{{ url_for('logins.login') }}";
+    </script>
+    {% else %} -->
+    <!--Add your rows below:-->
+    <script>
+    window.location.href = "{{ url_for('applications.application') }}";
+    </script>
+    <!-- {% endif %} -->
 </section>
 {% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html'%}
+{% block content%}
+<section class="container mt-4">
+    <p class="creditcheck_h1"> Customer List</p>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="thead-dark">Customer Name</th>
+                <th class="thead-dark">National Identification Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customers %}
+            {% set fullName = customer.first_name ~ ' ' ~ customer.last_name %}
+            <tr>
+                <td>{{ fullName }}</td>
+                <td>
+                    <a href="{{ url_for('creditchecks.customer_details', sin=customer.sin) }}">{{ customer.sin }}</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

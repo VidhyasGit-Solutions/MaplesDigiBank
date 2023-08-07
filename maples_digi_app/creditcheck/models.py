@@ -2,11 +2,9 @@ from datetime import datetime
 
 from flask_login import UserMixin
 from maples_digi_app import db
-from maples_digi_app.utils.constants import StatusEnum
-from sqlalchemy import BigInteger, CheckConstraint
 
 class Cust_CreditScores(db.Model, UserMixin):
-    cust_crsc_id = db.Column(db.String(50), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     userid = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     unq_id_no = db.Column(db.String(150))
     credit_score = db.Column(db.String(150))
