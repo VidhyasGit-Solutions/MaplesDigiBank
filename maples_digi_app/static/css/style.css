@@ -285,6 +285,12 @@ textarea {
 }
 
 
+input[readonly] {
+    background-color: #f2f2f2;
+    color: #888888;
+    cursor: not-allowed;
+}
+
 input[name="description"],
 textarea {
     width: 50%;
@@ -557,6 +563,6 @@ body {
     text-decoration: none;
 }
 
-    .table a:hover {
-        color: #ADD8E6; /* Light blue color for links on hover */
-    }
+.table a:hover {
+    color: #ADD8E6; /* Light blue color for links on hover */
+}
