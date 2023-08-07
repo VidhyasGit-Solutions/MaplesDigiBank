@@ -20,6 +20,7 @@
                <span class="error">{{ form.password.errors[0] }}</span>
                {% endif %}
             </p>
+            <p style="text-align: right;"><a href="{{ url_for('logins.forgot_password') }}">Forgot your password?</a></p>
             <p>
                {{ form.role_type.label }}<br>
                {{ form.role_type(class="form-control") }} {# Use appropriate CSS class if needed #}

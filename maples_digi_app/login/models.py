@@ -17,10 +17,24 @@ class User(db.Model, UserMixin):
     )
     account_locked = db.Column(db.Boolean, default=False)
     last_login_date = db.Column(db.DateTime, default=datetime.now)
+    password_reset_token = db.Column(db.String(100), nullable=True)
+    password_reset_token_expiration = db.Column(db.DateTime, nullable=True)
     created_date = db.Column(db.DateTime, default=datetime.now)
     updated_date = db.Column(
         db.DateTime, default=datetime.now, onupdate=datetime.now
     )
+
+    failed_login_attempt = db.Column(db.Integer, default=0)  # New column
+
+    def increment_failed_login(self):
+        if not self.failed_login_attempt:
+            self.failed_login_attempt = 1
+        else:
+            self.failed_login_attempt += 1
+
+    def reset_failed_login(self):
+        self.failed_login_attempt = 0
+        self.account_locked = False
 
     # # # Foreign keys
     # # employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'))
@@ -39,6 +53,10 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return f"User{self.username}{self.email}"
+    
+    def update_password(self, new_password):
+        self.password = new_password
+        db.session.commit()
 
 
 class UserAssociation(db.Model):
