@@ -1,12 +1,12 @@
 {
   "ExpandedNodes": [
     "",
-    "\\maples_digi_app",
     "\\maples_digi_app\\application",
     "\\maples_digi_app\\creditcheck",
     "\\maples_digi_app\\login",
     "\\maples_digi_app\\static",
     "\\maples_digi_app\\static\\css",
+    "\\maples_digi_app\\static\\images",
     "\\maples_digi_app\\static\\js",
     "\\maples_digi_app\\templates",
     "\\maples_digi_app\\utils"
