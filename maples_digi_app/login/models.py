@@ -110,7 +110,7 @@ class Customer(db.Model, UserMixin):
     mobile_no = db.Column(BigInteger, nullable=False)
     nationality = db.Column(db.String(255))
     occupation = db.Column(db.String(255))
-    signature = db.Column(db.Text)
+    signature = db.Column(db.LargeBinary)
     created_date = db.Column(db.DateTime, default=datetime.now)
     updated_date = db.Column(
         db.DateTime, default=datetime.now, onupdate=datetime.now
@@ -139,17 +139,18 @@ class Employee(db.Model):
     date_of_joining = db.Column(db.Date)
     bank_name = db.Column(db.String(255))
     instituion_no = db.Column(db.String(255))
-    addressline1 = db.Column(db.Text)
-    addressline2 = db.Column(db.Text)
+    address_line1 = db.Column(db.Text)
+    address_line2 = db.Column(db.Text)
     city = db.Column(db.String(255))
     province = db.Column(db.String(255))
     postal_code = db.Column(db.String(20))
     country = db.Column(db.String(255))
     mobile_no = db.Column(BigInteger, nullable=False)
+    nationality = db.Column(db.String(255))
     designation = db.Column(db.String(255))
     auth_to_approve = db.Column(db.Boolean)
     manager_id = db.Column(db.Integer)
-    signature = db.Column(db.Text)
+    signature = db.Column(db.LargeBinary)
     created_date = db.Column(db.DateTime, default=datetime.now)
     updated_date = db.Column(
         db.DateTime, default=datetime.now, onupdate=datetime.now

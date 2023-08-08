@@ -136,7 +136,7 @@ Magenta: #ff00ff */
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 70%;
+    height: 80%;
     padding: 30px;
     position: relative;
     left: 30%;
@@ -565,4 +565,10 @@ body {
 
 .table a:hover {
     color: #ADD8E6; /* Light blue color for links on hover */
+}
+
+input[readonly] {
+    background-color: #f2f2f2;
+    color: #888888;
+    cursor: not-allowed;
 }

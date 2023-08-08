@@ -7,6 +7,7 @@ from maples_digi_app.login.forms import LoginForm, ProfileForm, RegisterForm
 from maples_digi_app.login.models import User
 from sqlalchemy.exc import IntegrityError
 from flask_mail import Message
+from maples_digi_app.utils.utils import get_manager_data
 from werkzeug.security import check_password_hash, generate_password_hash
 
 logins = Blueprint("logins", __name__)
@@ -245,3 +246,16 @@ def send_password_reset_email(email, token):
 
     logger.debug(f"Password reset link has been sent to {email}")
     # mail.send(msg)
+
+@logins.route("/get_managers", methods=["GET"])
+def get_manager_options_api():
+    managers = get_manager_data()
+    logger.debug(f"list of all managers {managers}")
+    options = []
+    for each in managers:
+        option_data = {}
+        option_data["value"] = each.id
+        option_data["label"] = each.first_name + each.last_name
+        options.append(option_data)
+
+    return jsonify(options)
