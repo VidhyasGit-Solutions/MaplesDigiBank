@@ -7,7 +7,7 @@ from maples_digi_app.login.forms import LoginForm, ProfileForm, RegisterForm
 from maples_digi_app.login.models import User
 from sqlalchemy.exc import IntegrityError
 from flask_mail import Message
-from maples_digi_app.utils.utils import get_manager_data
+from maples_digi_app.utils.utils import get_manager_data, send_email
 from werkzeug.security import check_password_hash, generate_password_hash
 
 logins = Blueprint("logins", __name__)
@@ -234,18 +234,19 @@ def forgot_password():
 
 # Helper function to send password reset email
 def send_password_reset_email(email, token):
+    subject = "Password Reset Request"
     msg = Message(
-        "Password Reset Request",
+        subject,
         sender="noreply@example.com",
         recipients=[email],
     )
-    msg.body = f"Click the link below to reset your password:\n\n{url_for('logins.reset_password', token=token, _external=True)}"
-    logger.debug(
-        f"Click the link below to reset your password:\n\n{url_for('logins.reset_password', token=token, _external=True)}"
-    )
-
-    logger.debug(f"Password reset link has been sent to {email}")
+    body = f"Click the link below to reset your password:\n\n{url_for('logins.reset_password', token=token, _external=True)}"
+    msg.body = body
+    logger.debug(f"Password reset link has been sent to {email}\n {body}")
     # mail.send(msg)
+    response = send_email(email, body, subject)
+    logger.debug(response)
+
 
 @logins.route("/get_managers", methods=["GET"])
 def get_manager_options_api():
