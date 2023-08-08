@@ -42,6 +42,9 @@ class CustomerForm(FlaskForm):
 
     occupation = StringField("Occupation", validators=[DataRequired()])
     signature = FileField("Signature", validators=[DataRequired()])
+    submitted_on = DateField(
+        "Submitted On", format="%Y-%m-%d", validators=[DataRequired()]
+    )
     submit = SubmitField("Create Application")
 
     # def validate_email(self, email):
@@ -60,18 +63,42 @@ class CustomerForm(FlaskForm):
 
 class EmployeeForm(FlaskForm):
     # Add fields specific to the Employee table
-    employee_id = IntegerField("Employee ID", validators=[DataRequired()])
+    first_name = StringField(
+        "First Name",
+        render_kw={"placeholder": "Enter your First Name"},
+        validators=[DataRequired()],
+    )
+    middle_name = StringField(
+        "Middle Name", render_kw={"placeholder": "Enter your Last Name"}
+    )
+    last_name = StringField(
+        "Last Name",
+        render_kw={"placeholder": "Enter your Last Name"},
+        validators=[DataRequired()],
+    )
+    # employee_id = IntegerField("Employee ID", validators=[DataRequired()])
     date_of_joining = DateField(
         "Date of Joining", format="%Y-%m-%d", validators=[DataRequired()]
     )
-    bank_name = StringField("Bank Name", validators=[DataRequired()])
     institution_no = StringField("Institution Number")
     designation = StringField("Designation", validators=[DataRequired()])
-    auth_to_approve = SelectField(
-        "Authorization to Approve",
-        choices=[("Yes", "Yes"), ("No", "No")],
-        validators=[DataRequired()],
+    date_of_birth = DateField(
+        "Date of Birth", format="%Y-%m-%d", validators=[DataRequired()]
     )
+    # auth_to_approve = SelectField(
+    #     "Authorization to Approve",
+    #     choices=[("Yes", "Yes"), ("No", "No")],
+    #     validators=[DataRequired()],
+    # )
     manager_id = IntegerField("Manager ID")
+    address_line1 = StringField("Address Line 1", validators=[DataRequired()])
+    address_line2 = StringField("Address Line 2")
+    city = StringField("City", validators=[DataRequired()])
+    province = StringField("Province", validators=[DataRequired()])
+    postal_code = StringField("Postal Code", validators=[DataRequired()])
+    country = StringField("Country", validators=[DataRequired()])
+    mobile_no = IntegerField("Phone Number", validators=[DataRequired()])
+    nationality = StringField("Nationality", validators=[DataRequired()])
+    signature = FileField("Signature", validators=[DataRequired()])
 
     submit = SubmitField("Create Application")

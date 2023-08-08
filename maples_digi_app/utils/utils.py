@@ -29,3 +29,16 @@ def get_employee_data():
         # Handle case if user is not authenticated
         logger.error(f"{current_user} Employee not authenticated")
         return None
+
+def get_manager_data():
+    if current_user.is_authenticated:
+        manager = Employee.query.filter_by(designation="manager").all()
+        if manager:
+            return manager
+        else:
+            logger.warning("manager data not found.")
+            return None
+    else:
+        # Handle case if user is not authenticated
+        logger.error(f"{current_user} User not authenticated")
+        return None

@@ -18,10 +18,10 @@ class Application(db.Model, UserMixin):
         server_default="NEW",
     )
     application_type = db.Column(db.String(50))
-    application_type = db.Column(db.String(50))
 
     customer = db.relationship("Customer", backref="application", lazy=True)
     employee = db.relationship("Employee", backref="applications", lazy=True)
+    submitted_on = db.Column(db.DateTime)
 
     created_date = db.Column(db.DateTime, default=datetime.now)
     updated_date = db.Column(
@@ -33,16 +33,26 @@ class Application(db.Model, UserMixin):
 
     @property
     def status_percentage(self):
-
         progress = None
+        color = "blue"
+        text_color = "blue"
         if self.status == StatusEnum.NEW:
-            print()
             progress = 25
+            text_color = "yellow"
         elif self.status == StatusEnum.IN_PROGRESS:
             progress = 50
-        elif self.status in [StatusEnum.COMPLETED, StatusEnum.REJECTED]:
+            color = "yellow"
+        elif self.status == StatusEnum.UNDER_REVIEW:
+            progress = 80
+            color = "orange"
+        elif self.status == StatusEnum.COMPLETED:
             progress = 100
+            color= "green"
+        elif self.status == StatusEnum.REJECTED:
+            progress = 100
+            color = "red"
         else:
             progress = 0
+            color = "green"
         print(f"********progress {progress}")
-        return progress
+        return [progress, color, text_color]
