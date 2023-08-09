@@ -2,6 +2,7 @@ from flask_login import current_user
 from loguru import logger
 from maples_digi_app.login.models import Customer, Employee
 import requests
+from maples_digi_app.utils.constants import ALLOWED_EXTENSIONS
 
 
 def get_customer_data():
@@ -68,3 +69,9 @@ def send_email(recipient, body, subject):
         return "Email sent successfully!"
     else:
         return "Failed to send email"
+    
+def allowed_file(filename):
+    return (
+        "." in filename
+        and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+    )
