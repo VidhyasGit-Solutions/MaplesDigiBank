@@ -18,6 +18,8 @@ class Application(db.Model, UserMixin):
         server_default="NEW",
     )
     application_type = db.Column(db.String(50))
+    passport_file = db.Column(db.LargeBinary)
+    passport_file_name = db.Column(db.String(255))
 
     customer = db.relationship("Customer", backref="application", lazy=True)
     employee = db.relationship("Employee", backref="applications", lazy=True)

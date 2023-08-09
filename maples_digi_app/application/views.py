@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, redirect, render_template, request, url_for, session
+from flask import Blueprint,Response, abort, redirect, render_template, request, url_for, session
 from flask_login import current_user
 from loguru import logger
 from datetime import datetime, timedelta
@@ -6,8 +6,10 @@ from maples_digi_app.application.forms import CustomerForm, EmployeeForm
 from maples_digi_app.creditcheck.forms import CreditCheck_CustomerForm
 from maples_digi_app.application.models import Application, StatusEnum
 from maples_digi_app.login.models import Customer, Employee, UserAssociation
-from maples_digi_app.utils.utils import get_customer_data, get_employee_data
+from maples_digi_app.utils.utils import allowed_file, get_customer_data, get_employee_data
 from sqlalchemy import or_
+from werkzeug.utils import secure_filename
+
 
 applications = Blueprint("applications", __name__)
 
@@ -147,11 +149,19 @@ def create_application():
                 db.session.add(customer)
                 logger.debug(f"Customer {customer.passport_no} is created")
                 # Create the application with the customer details
+                filename = None
+                file_content = None
+                if form.passport_file.data:  # Check if a file was uploaded
+                    file = form.passport_file.data
+                    filename = secure_filename(file.filename)
+                    file_content = file.read()
                 application = Application(
                     customer_id=customer.passport_no,
                     status=StatusEnum.NEW.value,
                     application_type=customer.account_type,
-                    signature=form.signature.data.encode("utf-8"),
+                    submitted_on=form.submitted_on.data,
+                    passport_file=file_content,
+                    passport_file_name=filename,
                 )
                 db.session.add(application)
                 db.session.commit()
@@ -217,23 +227,35 @@ def edit_application(customer_id):
                 Customer.mobile_no: form.mobile_no.data,
                 Customer.nationality: form.nationality.data,
                 Customer.occupation: form.occupation.data,
-                Customer.signature: form.signature.data.encode("utf-8"),
                 Customer.updated_date: datetime.now(),
                 Customer.account_type: form.account_type.data,
             }
-
+            if form.signature.data:
+                logger.info("signature updated")
+                update_data[Customer.signature] = form.signature.data.encode(
+                    "utf-8"
+                )
+            else:
+                logger.info("signature not updated")
             # Perform the update query
             db.session.query(Customer).filter_by(
                 passport_no=passport_no
             ).update(update_data)
+
+            update_application = {
+                Application.updated_date: datetime.now(),
+                Application.submitted_on: form.submitted_on.data,
+            }
+
+            if form.passport_file.data:
+                file = form.passport_file.data
+                filename = secure_filename(file.filename)
+                file_content = file.read()
+                update_application[Application.passport_file] = file_content
+                update_application[Application.passport_file_name] = filename
             db.session.query(Application).filter_by(
                 customer_id=customer_id
-            ).update(
-                {
-                    Application.updated_date: datetime.now(),
-                    Application.submitted_on: form.submitted_on.data,
-                }
-            )
+            ).update(update_application)
 
             db.session.commit()
 
@@ -268,11 +290,45 @@ def edit_application(customer_id):
         form.occupation.data = customer.occupation
         form.signature.data = customer.signature.decode("utf-8")
         form.submitted_on.data = application.submitted_on
-
+        form.passport_file = application.passport_file
+        form.passport_file_name = application.passport_file_name
+        form.application_id = application.id
         return render_template("edit_application.html", form=form)
 
     else:
         return "Not Supported"
+
+@applications.route("/view_file/<int:application_id>")
+def view_file(application_id):
+    application = Application.query.get_or_404(application_id)
+    logger.debug(
+        f"current_user.id {current_user.id}, application {application}, {application.customer.userid}"
+    )
+    if current_user.id == application.customer.userid:
+        if application.passport_file and allowed_file(
+            application.passport_file_name
+        ):
+            content_type = (
+                "application/pdf"
+                if application.passport_file_name.endswith(".pdf")
+                else "image/jpeg"
+                if application.passport_file_name.endswith((".jpg", ".jpeg"))
+                else "image/png"
+            )
+            response = Response(
+                application.passport_file, content_type=content_type
+            )
+            response.headers[
+                "Content-Disposition"
+            ] = f"inline; filename={application.passport_file_name}"
+            response.headers["Content-Length"] = len(
+                application.passport_file
+            )  # Set content length
+            return response
+        return "File not found."
+    else:
+        return "Unauthorized or File not found."
+
 
 @applications.route(
     "/withdraw_application/<int:id>/<string:customer_id>",

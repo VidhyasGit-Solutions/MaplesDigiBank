@@ -41,6 +41,9 @@ class CustomerForm(FlaskForm):
     account_type = StringField("Account Type", validators=[DataRequired()])
 
     occupation = StringField("Occupation", validators=[DataRequired()])
+    application_id = IntegerField("Application ID")
+    passport_file_name = StringField("Uploaded File name")
+    passport_file = FileField("Upload Passport (PDF or Image)")
     signature = FileField("Signature", validators=[DataRequired()])
     submitted_on = DateField(
         "Submitted On", format="%Y-%m-%d", validators=[DataRequired()]
