@@ -16,6 +16,7 @@ class User(db.Model, UserMixin):
         db.String(50), CheckConstraint("role_type IN ('customer', 'employee')")
     )
     account_locked = db.Column(db.Boolean, default=False)
+    is_account_verified = db.Column(db.Boolean, default=False)
     last_login_date = db.Column(db.DateTime, default=datetime.now)
     password_reset_token = db.Column(db.String(100), nullable=True)
     password_reset_token_expiration = db.Column(db.DateTime, nullable=True)

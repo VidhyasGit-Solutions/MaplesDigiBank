@@ -9,6 +9,7 @@ from sqlalchemy.exc import IntegrityError
 from flask_mail import Message
 from maples_digi_app.utils.utils import get_manager_data, send_email
 from werkzeug.security import check_password_hash, generate_password_hash
+from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
 
 logins = Blueprint("logins", __name__)
 
@@ -35,32 +36,37 @@ def login():
                 username=username_or_email, role_type=role
             ).first()
         if user:
-            if user.account_locked:
-                logger.error(
-                    f"{username_or_email} Your account is locked. Please contact support"
-                )
-                flash("Your account is locked. Please contact support.")
-            elif check_password_hash(user.password, password):
-                user.last_login_date = datetime.now()
-                user.reset_failed_login() 
-                
-                db.session.commit()
-                logger.info(f"User {user.username} is  logged in {datetime.now()} successfully.")
-                login_user(user)
-                return redirect("/home")
-            else:
-                user.increment_failed_login()  # Increment failed login attempts
-                db.session.commit()
-                if user.failed_login_attempt >= 3:
-                    user.account_locked = True  # Lock the account after 3 failed attempts
-                    db.session.commit()
-                    logger.warning(f"User {user.username}'s account locked due to multiple failed attempts.")
-                    flash("Your account has been locked due to multiple failed attempts. Please contact support.")
-                else:
+            if user.is_account_verified:
+                if user.account_locked:
                     logger.error(
-                        f"Wrong password entered for {username_or_email}. Please try again."
+                        f"{username_or_email} Your account is locked. Please contact support"
                     )
-                    flash("Wrong password. Please try again.")
+                    flash("Your account is locked. Please contact support.")
+                elif check_password_hash(user.password, password):
+                    user.last_login_date = datetime.now()
+                    user.reset_failed_login() 
+                    
+                    db.session.commit()
+                    logger.info(f"User {user.username} is  logged in {datetime.now()} successfully.")
+                    login_user(user)
+                    return redirect("/home")
+                else:
+                    user.increment_failed_login()  # Increment failed login attempts
+                    db.session.commit()
+                    if user.failed_login_attempt >= 3:
+                        user.account_locked = True  # Lock the account after 3 failed attempts
+                        db.session.commit()
+                        logger.warning(f"User {user.username}'s account locked due to multiple failed attempts.")
+                        flash("Your account has been locked due to multiple failed attempts. Please contact support.")
+                    else:
+                        logger.error(
+                            f"Wrong password entered for {username_or_email}. Please try again."
+                        )
+                        flash("Wrong password. Please try again.")
+            else:
+                flash(
+                    "Your account is not verified. Please check your email for activation instructions."
+                )
         else:
             logger.error(
                 f"Wrong Username or Email entered {username_or_email}. Please try again."
@@ -130,7 +136,7 @@ def profile():
 
 @logins.route("/register", methods=["POST", "GET"])
 def register():
-    from maples_digi_app import db
+    from maples_digi_app import db, app
 
     form = RegisterForm()
     if request.method == "GET":
@@ -145,10 +151,26 @@ def register():
                     username=form.username.data,
                     email=form.email.data,
                     role_type=form.role_type.data,
+                    is_account_verified=False,
                     password=generate_password_hash(form.password.data),
                 )
                 db.session.add(user)
                 db.session.commit()
+                token_serializer = URLSafeTimedSerializer(
+                    app.config["SECRET_KEY"]
+                )
+                token = token_serializer.dumps(user.email, salt="activate")
+                activation_link = url_for(
+                    "logins.activate_account", token=token, _external=True
+                )
+
+                body = f"Please click the following link to activate your account: {activation_link}"
+                logger.debug(body)
+                send_email(user.email, body, "Activate Your Account")
+                flash(
+                    "Activation link is sent to your email. Please activate it",
+                    "success",
+                )
                 return redirect("/login")
             except IntegrityError() as err:
                 logger.error(
@@ -162,6 +184,35 @@ def register():
                         f"Validation error for field '{field}': {error}"
                     )
             return render_template("register.html", form=form)
+
+
+@logins.route("/activate_account/<token>")
+def activate_account(token):
+    from maples_digi_app import app, db
+
+    try:
+        token_serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
+        email = token_serializer.loads(
+            token, salt="activate", max_age=3600
+        )  # Token valid for 1 hour
+    except SignatureExpired:
+        flash("Activation link has expired.")
+    except BadSignature:
+        flash("Invalid activation link.")
+    else:
+        user = User.query.filter_by(email=email).first()
+        if user:
+            user.is_account_verified = True
+            db.session.commit()
+            flash(
+                "Your account has been activated. You can now log in.",
+                "success",
+            )
+        else:
+            flash("User not found.")
+
+    return redirect("/login")
+
 
 # Password reset route
 @logins.route("/reset_password/<token>", methods=["GET", "POST"])

@@ -192,6 +192,19 @@
       // Redirect to the specified URL using JavaScript
       window.location.href = "{{ url_for('logins.logout') }}";
     }
+    document.addEventListener('DOMContentLoaded', function () {
+      var flashMessages = document.querySelectorAll('.flash-messages');
+      flashMessages.forEach(function (message) {
+          setTimeout(function () {
+              message.style.opacity = '0';
+              message.style.transition = 'opacity 0.5s';
+              setTimeout(function () {
+                  message.style.display = 'none';
+                  message.parentElement.removeChild(message);
+              }, 500); // 0.5 seconds for the fade-out transition
+          }, 10000); // 10 seconds in milliseconds
+      });
+    });
     // Function to update the timer
     function updateTimer() {
       // Get the current time
@@ -225,8 +238,17 @@
       }
       localStorage.setItem('loginTime', loginTime);
     }
-    var loginTime = new Date(localStorage.getItem('loginTime')) || new Date('{{ current_user.last_login_date }}');
-
+    var loginTime;
+    var currentTime = new Date();
+    var lastLoginDate = new Date('{{ current_user.last_login_date }}');
+    var storedLoginTime = new Date(localStorage.getItem('loginTime'));
+    if ("{{ current_user.is_authenticated }}" === "True" && (currentTime - lastLoginDate) < (10 * 60 * 1000)) {
+        loginTime = lastLoginDate; // Use current_user's last login time if not expired
+    } else if (storedLoginTime && (currentTime - storedLoginTime) < (10 * 60 * 1000)) {
+        loginTime = storedLoginTime; // Use stored login time from local storage if not expired
+    } else {
+        loginTime = new Date(); // Default to current time if no valid login time
+    }
 
     updateTimer();
     setInterval(updateTimer, 1000);
