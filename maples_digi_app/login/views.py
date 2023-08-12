@@ -3,13 +3,15 @@ import secrets
 from flask import Blueprint, flash, jsonify, redirect, render_template, request, session,url_for
 from flask_login import current_user, login_user, logout_user
 from loguru import logger
-from maples_digi_app.login.forms import LoginForm, ProfileForm, RegisterForm
+from maples_digi_app.login.forms import LoginForm, ProfileForm, RegisterForm, password_check
 from maples_digi_app.login.models import User
 from sqlalchemy.exc import IntegrityError
 from flask_mail import Message
 from maples_digi_app.utils.utils import get_manager_data, send_email
 from werkzeug.security import check_password_hash, generate_password_hash
 from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
+from wtforms.validators import ValidationError
+from markupsafe import Markup
 
 logins = Blueprint("logins", __name__)
 
@@ -263,23 +265,30 @@ def reset_password(token):
     if request.method == "POST":
         new_password = request.form["password"]
         confirm_password = request.form.get("confirm_password")
+        errors = password_check(new_password)
+        if errors:
+            # flash('\n'.join(errors))
+            error_message = '<br>'.join(errors)
+            flash(Markup(error_message))
 
-        # Check if the new password and confirm password match
-        if new_password != confirm_password:
-            flash("Passwords do not match. Please try again.", "error")
+            # raise ValidationError(errors)
         else:
-            # Update the user's password, reset token, and related data
-            user.password = generate_password_hash(new_password)
-            user.password_reset_token = None
-            user.password_reset_token_expiration = None
-            user.reset_failed_login()
-            db.session.commit()
-            logger.debug(f"User {user.username} password reset successfully.")
-            flash(
-                "Your password has been successfully reset. You can now log in with your new password.",
-                "success",
-            )
-            return redirect(url_for("logins.login"))
+            # Check if the new password and confirm password match
+            if new_password != confirm_password:
+                flash("Passwords do not match. Please try again.", "error")
+            else:
+                # Update the user's password, reset token, and related data
+                user.password = generate_password_hash(new_password)
+                user.password_reset_token = None
+                user.password_reset_token_expiration = None
+                user.reset_failed_login()
+                db.session.commit()
+                logger.debug(f"User {user.username} password reset successfully.")
+                flash(
+                    "Your password has been successfully reset. You can now log in with your new password.",
+                    "success",
+                )
+                return redirect(url_for("logins.login"))
     logger.debug(f"token {token} is being used to reset password")
     return render_template("reset_password.html", token=token)
 
