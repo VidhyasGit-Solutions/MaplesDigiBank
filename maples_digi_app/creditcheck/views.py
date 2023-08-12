@@ -1,3 +1,12 @@
+"""
+Credit Check Module
+This is the controller class 
+    Display of Customers
+    Display of Customer Details
+    Credit Check Process hitting Rest API
+    Display of Gauge Chart
+
+"""
 from flask import Blueprint, redirect, session, render_template, request, url_for, flash
 from flask_login import current_user
 from loguru import logger
