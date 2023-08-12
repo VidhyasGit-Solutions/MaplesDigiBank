@@ -8,13 +8,13 @@ from wtforms.validators import DataRequired, ValidationError
 
 def password_check(password):
     errors = []
-    if len(password.data) < 8:
+    if len(password) < 8:
         errors.append("Password must be at least 8 characters long.")
-    if not re.search(r"[A-Z]", password.data):
+    if not re.search(r"[A-Z]", password):
         errors.append("Password must contain at least one Uppercase letter.")
-    if not re.search(r"[!@#$%^&*()\-_=+{}[\]:;,.<>?/\\]", password.data):
+    if not re.search(r"[!@#$%^&*()\-_=+{}[\]:;,.<>?/\\]", password):
         errors.append("Password must contain at least one Special character.")
-    if not re.search(r"\d", password.data):
+    if not re.search(r"\d", password):
         errors.append("Password must contain at least one Number.")
     return errors
 
@@ -102,7 +102,7 @@ class RegisterForm(FlaskForm):
             )
 
     def validate_password(self, password):
-        errors = password_check(password)
+        errors = password_check(password.data)
         if errors:
             raise ValidationError(errors)
 
@@ -186,6 +186,6 @@ class ProfileForm(FlaskForm):
             )
 
     def validate_password(self, password):
-        errors = password_check(password)
+        errors = password_check(password.data)
         if errors:
             raise ValidationError(errors)
