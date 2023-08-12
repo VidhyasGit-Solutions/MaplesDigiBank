@@ -13,7 +13,7 @@ from werkzeug.utils import secure_filename
 
 applications = Blueprint("applications", __name__)
 
-
+# route handler for the URL path "/home".
 @applications.route("/home")
 def home():
     logger.debug("Home")
@@ -21,6 +21,7 @@ def home():
 
 
 @applications.route("/applications", methods=["GET", "POST"])
+# display of applications based on the user's role (customer or employee)
 def application():
     logger.debug(f"Applications{current_user.id}")
     customer = get_customer_data()
@@ -89,7 +90,7 @@ def customer_list():
 @applications.route("/create_application", methods=["GET", "POST"])
 def create_application():
     from maples_digi_app import db
-
+    # Logging debug message for tracking
     logger.debug("Create Applications")
     if current_user.role_type == "employee":
         form = EmployeeForm()
@@ -99,6 +100,7 @@ def create_application():
         logger.debug(request)
         if form.validate_on_submit():
             print(form)
+             # Determine the form to use based on the user's role
             if current_user.role_type == "employee":
                 # Create and add Employee object to the database
                 employee = Employee(
@@ -180,7 +182,7 @@ def create_application():
     else:
         return render_template("create_application.html", form=form)
 
-
+# Define a route handler for "/edit_application" URL path with customer_id parameter
 @applications.route(
     "/edit_application/<string:customer_id>", methods=["GET", "POST"]
 )
@@ -192,7 +194,9 @@ def edit_application(customer_id):
         return "Not Supported"
     else:
         form = CustomerForm()
-
+    # Logic to handle application editing based on status
+    # Redirect user to home route after successful update
+    # Log validation errors if the form is not valid
     customer = Customer.query.get_or_404(customer_id)
     logger.debug(f"Customer {customer} is found")
     customer = Customer.query.filter_by(
@@ -211,6 +215,10 @@ def edit_application(customer_id):
         logger.debug(request)
         logger.info(f"signature {form.signature.data}")
         if form.validate_on_submit():
+            # Logic for handling form submission based on user's role
+            # If user is an employee, create and add Employee object to the database
+            # If user is a customer, create Customer and Application objects
+            
             passport_no = form.passport_no.data
             update_data = {
                 Customer.first_name: form.first_name.data,
@@ -231,6 +239,7 @@ def edit_application(customer_id):
                 Customer.account_type: form.account_type.data,
             }
             if form.signature.data:
+                # Check if a signature has been provided in the form
                 logger.info("signature updated")
                 update_data[Customer.signature] = form.signature.data.encode(
                     "utf-8"
@@ -248,9 +257,11 @@ def edit_application(customer_id):
             }
 
             if form.passport_file.data:
+                # Check if a passport file has been uploaded in the form
                 file = form.passport_file.data
                 filename = secure_filename(file.filename)
                 file_content = file.read()
+                # Update the application's passport file and passport file name with the new content and filename
                 update_application[Application.passport_file] = file_content
                 update_application[Application.passport_file_name] = filename
             db.session.query(Application).filter_by(
@@ -298,12 +309,15 @@ def edit_application(customer_id):
     else:
         return "Not Supported"
 
+
+# Define a route handler for "/view_file" URL path with application_id parameter
 @applications.route("/view_file/<int:application_id>")
 def view_file(application_id):
     application = Application.query.get_or_404(application_id)
     logger.debug(
         f"current_user.id {current_user.id}, application {application}, {application.customer.userid}"
     )
+    # Check if the current user has permission to view the file
     if current_user.id == application.customer.userid:
         if application.passport_file and allowed_file(
             application.passport_file_name
