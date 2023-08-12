@@ -84,6 +84,17 @@
                     </div>
                 </div>
             </li>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endwith %}
             <li class="form-line" data-type="control_text" id="id_7">
                 <div id="cid_7" class="form-input-wide" data-layout="full">
                     <div id="text_7" class="form-html" data-component="text" tabindex="0">

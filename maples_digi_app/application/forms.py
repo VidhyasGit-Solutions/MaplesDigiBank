@@ -1,8 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import DateField, FileField, IntegerField, SelectField, StringField, SubmitField
-from wtforms.validators import DataRequired
-
-# from wtforms.validators import ValidationError
+from wtforms.validators import DataRequired, ValidationError
+from maples_digi_app.login.models import Customer
 
 
 class CustomerForm(FlaskForm):
@@ -55,18 +54,10 @@ class CustomerForm(FlaskForm):
     )
     submit = SubmitField("Create Application")
 
-    # def validate_email(self, email):
-    #     existing_user = User().query.filter_by(email=email.data).first()
-    #     if existing_user:
-    #         raise ValidationError(
-    #             "Email already exists. Please choose a different email."
-    #         )
-
-    # def validate_password(self, password):
-    #     if len(password.data) < 8:
-    #         raise ValidationError(
-    #             "Password must be at least 8 characters long."
-    #         )
+    def validate_passport_no(self, passport_no):
+        existing_customer = Customer.query.filter_by(passport_no=passport_no.data).first()
+        if existing_customer:
+            raise ValidationError("Passport number is already in use.")
 
 
 class EmployeeForm(FlaskForm):
