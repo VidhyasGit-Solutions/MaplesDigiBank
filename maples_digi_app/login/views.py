@@ -18,7 +18,6 @@ logins = Blueprint("logins", __name__)
 @logins.route("/login", methods=["POST", "GET"])
 def login():
     from maples_digi_app import db
-
     form = LoginForm()
     if form.validate_on_submit():
 
@@ -91,7 +90,8 @@ def logout():
 @logins.route("/users")
 def users():
     users = User.query.all()
-    res = {}
+    result = []
+    # res = {}
     for user in users:
         res = {
             "first_name": user.first_name,
@@ -101,7 +101,8 @@ def users():
             "password": user.password,
             "role_type": user.role_type,
         }
-    return jsonify(res)
+        result.append(res)
+    return jsonify(result)
 
 
 @logins.route("/profile", methods=["GET", "POST"])
