@@ -79,50 +79,14 @@
             <li id="cid_1" class="form-input-wide" data-type="control_head">
                 <div class="form-header-group  header-large">
                     <div class="header-text httac htvam">
-                        <h1 id="header_1" class="form-header" data-component="header">Bank Account Registration Form
+                        <h1 id="header_1" class="form-header" data-component="header">Employee Registration Form
                         </h1>
                     </div>
                 </div>
             </li>
-            <li class="form-line" data-type="control_text" id="id_7">
-                <div id="cid_7" class="form-input-wide" data-layout="full">
-                    <div id="text_7" class="form-html" data-component="text" tabindex="0">
-                        <p><span style="font-size:12pt;color:#3366ff;"><strong>Account Information</strong></span></p>
-                    </div>
-                </div>
-            </li>
-            <li class="form-line form-line-column form-col-1" data-type="control_dropdown" id="id_6"><label
-                class="form-label form-label-top form-label-auto" id="label_6" for="input_6"> Account Type <span
-                    class="form-required">*</span></label>
-                <div id="cid_6" class="form-input-wide" data-layout="half"> <select class="form-dropdown" id="input_6"
-                    name="account_type" style="width:310px" data-component="dropdown" aria-label="Account Type">
-                    <option value="">Please Select</option>
-                    <option value="CheckingAccount">Checking Account</option>
-                    <option value="SavingAccount">Savings Account</option>
-                </select> </div>
-        </li>
-            <li class="form-line form-line-column form-col-2 jf-required" data-type="control_textbox" id="id_45"><label
-                    class="form-label form-label-top form-label-auto" id="label_45" for="input_45">Passport Number<span
-                        class="form-required">*</span> </label>
-                <div id="cid_45" class="form-input-wide jf-required" data-layout="half"> <input type="text"
-                        id="input_45" name="passport_no" data-type="input-textbox"
-                        class="form-textbox validate[required]" data-defaultvalue="" style="width:310px" size="310"
-                        value="" data-component="textbox" aria-labelledby="label_45" required="" /> </div>
-            </li>
-            <li class="form-line form-line-column form-col-3" data-type="control_number" id="id_42"><label
-                    class="form-label form-label-top form-label-auto" id="label_42" for="input_42"> SIN </label>
-                <div id="cid_42" class="form-input-wide" data-layout="half"> <input type="number" id="input_42"
-                        name="sin" data-type="input-number" class=" form-number-input form-textbox" data-defaultvalue=""
-                        style="width:310px" size="310" value="" placeholder="e.g., 23" data-component="number"
-                        aria-labelledby="label_42" step="any" /> </div>
-            </li>
-            <li class="form-line" data-type="control_divider" id="id_8">
-                <div id="cid_8" class="form-input-wide" data-layout="full">
-                    <div class="divider" data-component="divider"
-                        style="border-bottom-width:1px;border-bottom-style:solid;border-color:#e6e6e6;height:1px;margin-left:0px;margin-right:0px;margin-top:5px;margin-bottom:5px">
-                    </div>
-                </div>
-            </li>
+
+
+
             <li class="form-line" data-type="control_text" id="id_9">
                 <div id="cid_9" class="form-input-wide" data-layout="full">
                     <div id="text_9" class="form-html" data-component="text" tabindex="0">
@@ -134,6 +98,40 @@
                     </div>
                 </div>
             </li>
+            <li class="form-line form-line-column form-col-1" data-type="control_datetime" id="id_52"><label
+                    class="form-label form-label-top form-label-auto" id="label_52" for="lite_mode_52"> Date of Joining
+                </label>
+                <div id="cid_52" class="form-input-wide" data-layout="half">
+                    <div data-wrapper-react="true">
+                        <span class="form-sub-label-container" style="vertical-align:top">
+                            <input type="date" class="form-textbox " id="date_of_joining" name="date_of_joining"
+                                src="https://cdn.jotfor.ms/images/calendar.png" required>
+                        </span>
+                    </div>
+                </div>
+            </li>
+            <!-- <li class="form-line form-line-column form-col-2" data-type="control_textbox" id="id_45"><label
+                    class="form-label form-label-top form-label-auto" id="label_45" for="input_45"> Designation </label>
+                <div id="cid_45" class="form-input-wide" data-layout="half"> <input type="text" id="input_45"
+                        name="designation" data-type="input-textbox" class="form-textbox" data-defaultvalue=""
+                        style="width:310px" size="310" value="" data-component="textbox" aria-labelledby="label_45" />
+                </div>
+            </li> -->
+            
+            <li class="form-line form-line-column form-col-2" data-type="control_dropdown" id="id_designation"><label
+                    class="form-label form-label-top form-label-auto" id="label_45" for="input_designation"> Designation
+                    <span class="form-required">*</span></label>
+                <div id="cid_designation" class="form-input-wide" data-layout="half">
+                    <select class="form-dropdown" id="input_designation"
+                    name="designation" style="width:310px" data-component="dropdown" aria-label="Designation">
+                    <option value="">Please Select</option>
+                    <option value="manager">Manager</option>
+                    <option value="staff">Staff</option>
+                </select> 
+
+                </div>
+            </li>
+
             <li class="form-line jf-required" data-type="control_fullname" id="id_4" data-compound-hint=",,"><label
                     class="form-label form-label-top form-label-extended form-label-auto" id="label_4" for="prefix_4">
                     Name<span class="form-required">*</span> </label>
@@ -778,31 +776,67 @@
                         <option value="other">Other</option>
                     </select> </div>
             </li>
-            <li class="form-line form-line-column form-col-2" data-type="control_textbox" id="id_16"><label
-                    class="form-label form-label-top form-label-auto" id="label_16" for="input_16"> Occupation </label>
-                <div id="cid_16" class="form-input-wide" data-layout="half"> <input type="text" id="input_16"
-                        name="occupation" data-type="input-textbox" class="form-textbox" data-defaultvalue=""
-                        style="width:310px" size="310" value="" data-component="textbox" aria-labelledby="label_16" />
+
+
+
+            <li class="form-line form-line-column form-col-2" data-type="control_dropdown" id="id_55">
+                <label class="form-label form-label-top form-label-auto" id="label_55" for="input_55">Manager</label>
+                <div id="cid_55" class="form-input-wide" data-layout="half">
+                    <select class="form-dropdown" id="input_55" name="manager" style="width:310px"
+                        data-component="dropdown" aria-label="Manager" disabled>
+                        <option value="">Please Select</option>
+                        <!-- <option value=""></option>
+                        <option value="CheckingAccount">Checking Account</option>
+                        <option value="SavingAccount">Savings Account</option> -->
+                    </select>
                 </div>
             </li>
-            <li class="form-line" data-type="control_divider" id="id_10">
-                <div id="cid_10" class="form-input-wide" data-layout="full">
-                    <div class="divider" data-component="divider"
-                        style="border-bottom-width:1px;border-bottom-style:solid;border-color:#e6e6e6;height:1px;margin-left:0px;margin-right:0px;margin-top:5px;margin-bottom:5px">
-                    </div>
-                </div>
-            </li>
-            <li class="form-line" data-type="control_text" id="id_9">
-                <div id="cid_9" class="form-input-wide" data-layout="full">
-                    <div id="text_9" class="form-html" data-component="text" tabindex="0">
-                        <p style="text-align: left;"><span style="font-size: 12pt; color: #3366ff;"><strong>Upload Documents</strong></span></p>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <label for="passport_file" style="color: #2C3345">Passport (PDF or Image):</label>
-                <input type="file" name="passport_file" accept=".pdf,.jpg,.jpeg,.png">
-            </li>
+            <script type="text/javascript">
+                function populateManagerDropdown() {
+                    var managerDropdown = document.getElementById("input_55");
+                    managerDropdown.innerHTML = ""; // Clear existing options
+
+                    // Fetch options from the server using AJAX
+                    fetch('/get_managers')
+                        .then(response => response.json())
+                        .then(data => {
+                            // Populate the dropdown with fetched options
+                            data.forEach(option => {
+                                var optionElement = document.createElement('option');
+                                optionElement.value = option.value;
+                                optionElement.text = option.label;
+                                managerDropdown.appendChild(optionElement);
+                            });
+                        })
+                        .catch(error => console.error('Error fetching manager options:', error));
+                }
+                // Function to check if the designation input text contains "manager"
+                function checkDesignation() {
+                    var designationInput = document.getElementById("input_designation");
+                    var managerDropdown = document.getElementById("input_55");
+
+
+                    var inputText = designationInput.value.toLowerCase();
+                    var searchString = "manager";
+
+                    if (inputText.includes(searchString)) {
+                        managerDropdown.disabled = true; // Disable the dropdown if the input contains "manager"
+                    } else {
+                        managerDropdown.disabled = false; // Enable the dropdown if the input does not contain "manager"
+                    }
+                }
+
+                // Call the function when the form is loaded and whenever the designation input text changes
+                window.onload = function () {
+                    populateManagerDropdown();
+                    checkDesignation();
+                    document.getElementById("input_designation").addEventListener("input", checkDesignation);
+                };
+            </script>
+
+
+
+
             <li class="form-line" data-type="control_divider" id="id_10">
                 <div id="cid_10" class="form-input-wide" data-layout="full">
                     <div class="divider" data-component="divider"
@@ -854,8 +888,9 @@
                     </div>
                 </div>
             </li>
+
             <li class="form-line form-line-column form-col-1" data-type="control_datetime" id="id_26"><label
-                class="form-label form-label-top form-label-auto" id="label_26" for="lite_mode_26"> Date </label>
+                    class="form-label form-label-top form-label-auto" id="label_26" for="lite_mode_26"> Date </label>
                 <div id="cid_26" class="form-input-wide" data-layout="half">
                     <div data-wrapper-react="true">
                         <span class="form-sub-label-container" style="vertical-align:top">

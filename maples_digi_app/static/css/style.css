@@ -136,7 +136,7 @@ Magenta: #ff00ff */
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 70%;
+    height: 80%;
     padding: 30px;
     position: relative;
     left: 30%;
@@ -203,14 +203,23 @@ button {
     margin-top: 4px;
 }
 
+.success {
+    /* background-color: rgba(0, 0, 0, 0.531); Green background for success messages */
+    background-color: green;
+    color: white;
+}
+
 .error-container {
     margin-bottom: 16px;
 }
 
 /* CSS for flash messages */
 .flash-messages {
-    list-style-type: none;
-    padding: 0;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-weight: bold;
+    background-color: #e74c3c;
 }
 
     .flash-messages li {
@@ -284,6 +293,12 @@ textarea {
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
+
+input[readonly] {
+    background-color: #f2f2f2;
+    color: #888888;
+    cursor: not-allowed;
+}
 
 input[name="description"],
 textarea {
@@ -557,6 +572,12 @@ body {
     text-decoration: none;
 }
 
-    .table a:hover {
-        color: #ADD8E6; /* Light blue color for links on hover */
-    }
+.table a:hover {
+    color: #ADD8E6; /* Light blue color for links on hover */
+}
+
+input[readonly] {
+    background-color: #f2f2f2;
+    color: #888888;
+    cursor: not-allowed;
+}

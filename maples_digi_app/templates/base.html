@@ -111,6 +111,7 @@
 
                     <div>
                         <div class="col" style="text-align-last: right;">
+                            <p>Your session will expire in <span id="timer">10:00</span> minutes.</p>
                             <h3 id="calender-data">
                                 <span class="calendar-fold" id="year"> </span> <span style="color:rgb(203, 178, 106);font-size: 24px;">-</span>
                                 <span class="calendar-fold" id="month"></span> <span style="color:rgb(203, 178, 106);font-size: 24px;">-</span>
@@ -191,6 +192,66 @@
       // Redirect to the specified URL using JavaScript
       window.location.href = "{{ url_for('logins.logout') }}";
     }
+    document.addEventListener('DOMContentLoaded', function () {
+      var flashMessages = document.querySelectorAll('.flash-messages');
+      flashMessages.forEach(function (message) {
+          setTimeout(function () {
+              message.style.opacity = '0';
+              message.style.transition = 'opacity 0.5s';
+              setTimeout(function () {
+                  message.style.display = 'none';
+                  message.parentElement.removeChild(message);
+              }, 500); // 0.5 seconds for the fade-out transition
+          }, 10000); // 10 seconds in milliseconds
+      });
+    });
+    // Function to update the timer
+    function updateTimer() {
+      // Get the current time
+      var currentTime = new Date();
+      // Calculate the time remaining in minutes
+      var timeRemaining = Math.max(0, 600 - Math.floor((currentTime - loginTime) / 1000));
+      // Format the time as "mm:ss"
+      var minutes = Math.floor(timeRemaining / 60);
+      var seconds = timeRemaining % 60;
+      var formattedTime = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+      // Update the timer element
+      document.getElementById('timer').innerText = formattedTime;
+
+      if (timeRemaining <= 0) {
+        var resetTimer = confirm('Your session has expired. Do you want to conitnue the session?');
+        if (resetTimer) {
+          loginTime = new Date();
+          // Reset the timer to 10 minutes (600 seconds)
+          timeRemaining = 600;
+          minutes = Math.floor(timeRemaining / 60);
+          seconds = timeRemaining % 60;
+          formattedTime = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+          document.getElementById('timer').innerText = formattedTime;
+
+        } else {
+          // You can also redirect the user to the login page here if needed
+          console.log("login time", loginTime)
+          window.location.href = "{{ url_for('logins.logout') }}";
+        }
+
+      }
+      localStorage.setItem('loginTime', loginTime);
+    }
+    var loginTime;
+    var currentTime = new Date();
+    var lastLoginDate = new Date('{{ current_user.last_login_date }}');
+    var storedLoginTime = new Date(localStorage.getItem('loginTime'));
+    if ("{{ current_user.is_authenticated }}" === "True" && (currentTime - lastLoginDate) < (10 * 60 * 1000)) {
+        loginTime = lastLoginDate; // Use current_user's last login time if not expired
+    } else if (storedLoginTime && (currentTime - storedLoginTime) < (10 * 60 * 1000)) {
+        loginTime = storedLoginTime; // Use stored login time from local storage if not expired
+    } else {
+        loginTime = new Date(); // Default to current time if no valid login time
+    }
+
+    updateTimer();
+    setInterval(updateTimer, 1000);
     </script>
     {% block content %}
     {% endblock %}

@@ -1,21 +1,6 @@
 {% extends 'base.html'%}
 {% block content %}
 <section class="container">
-    <!-- <style>
-       /* CSS for the progress bar */
-       .progress-bar {
-          width: 100%;
-          background-color: #f1f1f1;
-       }
-
-       .progress {
-          height: 30px;
-          background-color: #4CAF50;
-          text-align: center;
-          line-height: 30px;
-          color: white;
-       }
-    </style> -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -64,6 +49,20 @@
             line-height: 20px;
             padding: 0px 10px;
         }
+
+        #application-header {
+         display: flex;
+         justify-content: space-evenly;
+         padding: 10px;
+        }
+
+        .add_button {
+            padding: 10px 60px;
+            background-color: #e18b1b;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
     </style>
     <div class="container">
         <div class="col">
@@ -81,26 +80,35 @@
             {% endwith %}
         </div>
     </div>
+    {% if employee %}
+    <div id="application-header" class="row">
+        <a href="{{ url_for('applications.application') }}">
+            <button class="add_button">Review Applications</button>
+        </a>
+        <a href="{{ url_for('applications.application') }}">
+            <button class="add_button">Assign New Applications</button>
+        </a>
+        <a href="{{ url_for('applications.customer_list') }}">
+            <button class="add_button">Credit Score Check</button>
+        </a>
+    </div>
+    {% endif %}
     {% if applications|length == 0 %}
     <div id="application-header" class="row">
         <a href="{{ url_for('applications.create_application') }}">
             <button class="add_button">Create New Application</button>
         </a>&nbsp;&nbsp;&nbsp;
-        {% if userrole == "employee" %}
-        <a href="{{ url_for('applications.customer_list') }}">
-            <button class="add_button">Credit Score Check</button>
-        </a>
-        {% endif %}
     </div>
     {% else %}
     <div class="container">
+        {% if customer and not employee %}
         <div class="header">
-            <h1>Welcome {{ customer.first_name }} {{ customer.last_name }}</h1>
+           <h1>Welcome {{ customer.first_name }} {{ customer.last_name }}</h1>
         </div>
+        
         <div class="row" style="padding: 40px 50px;">
             {% for application in applications %}
             <div class="col-md-10">
-
                 <ul id="round">
                     <h3 style="text-align: center;  color: #e18b1b">{{ application.application_type }} Application</h3>
                     <br>
@@ -111,14 +119,18 @@
                     <li>Status: {{ application.status.value }}</li>
                     <br>
                     <div class="progress-bar">
-                        <div class="progress" style="width: {{ application.status_percentage }}%;">
-                            {{ application.status.value }}
+                        <div class="progress"
+                           style="width: {{ application.status_percentage[0] }}%; background-color: {{ application.status_percentage[1] }}; color: {{ application.status_percentage[2] }};">
+                           {{ application.status.value }}
                         </div>
-                    </div>
+                     </div>
 
+                    
                     <div style="display: flex; justify-content: space-between; padding: 40px 50px; ">
-                        <a style="text-align: right;"
-                           href="{{ url_for('applications.withdraw_application', id=application.id, customer_id=customer.passport_no) }}"></a>
+                        <div class="css-16i2xin"><span><a
+                            href="{{ url_for('applications.edit_application', customer_id=customer.passport_no) }}"><i
+                               class="fas fa-edit"></i></a>
+                        </span></div>
                         <div class="css-16i2xin">
                             <span>
                                 <a href="{{ url_for('applications.withdraw_application', id=application.id, customer_id=customer.passport_no) }}">
@@ -127,67 +139,44 @@
                             </span>
                         </div>
                         </span>
-
                     </div>
                 </ul>
-
             </div>
             {% endfor %}
         </div>
+        {% else %}
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="thead-dark">Application ID</th>
+                        <th class="thead-dark">Submitted On</th>
+                        <th class="thead-dark">Last Updated</th>
+                        <th class="thead-dark" style="width: 30%;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for application in applications %}
+                    <br>
+                    <tr>
+                        <td><a href="{{ url_for('creditchecks.customer_details', sin=customer.sin) }}">{{ application.id }} </a></td>
+                        <td>{{ application.created_date.strftime('%A, %d %b, %Y') }}</td>
+                        <td>{{ application.updated_date.strftime('%A, %d %b, %Y') }}</td>
+                        <!-- <td>{{ application.status.value }}</td> -->
+                        <td>
+                            <div class="progress-bar">
+                                <div class="progress"
+                                   style="width: {{ application.status_percentage[0] }}%; background-color: {{ application.status_percentage[1] }}; color: {{ application.status_percentage[2] }};">
+                                   {{ application.status.value }}
+                                </div>
+                             </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         {% endif %}
-
-
-
-
-        <!-- <ul class="applications">
-           {% for application in applications %}
-           <li class="application">
-              <div class="application-id"> Application ID: {{ application.id }}</div>
-              <div class="progress-bar">
-                 <div class="progress" style="width: {{ application.status_percentage }}%;">
-                    {{ application.status.value }}
-                 </div>
-              </div>
-
-
-           </li>
-           {% endfor %}
-        </ul> -->
     </div>
-
-
+    {% endif %}
 </section>
 
-<!-- <script>
-   function updateDate() {
-      const dateElement = document.querySelector(".calendar-fold");
-      const currentDate = new Date();
-      dateElement.textContent = currentDate.toLocaleString();
-      dateElement.classList.add("change-date");
-      setTimeout(() => {
-         dateElement.classList.remove("change-date");
-      }, 1000);
-   }
-
-   setInterval(updateDate, 5000); // Update the date every 5 seconds (adjust as needed)
-</> -->
 {% endblock %}
-
-
-
-<!-- {% for todo in todos %}
-      <div class="col-md-4">
-         <ul id="round">
-            <h3 style="text-align: center;  color: #e18b1b">{{ application.task_name }}</h3>
-            <br>
-            <li>{{ todo.due_date.strftime('%A, %d %b, %Y') }}</li>
-            <br>
-            <li>Status: {{ todo.status }}</li>
-            <br>
-            <div style="display: flex; justify-content: space-between;">
-               <a style="text-align: right;" href="{{ url_for('tasks.edit_task', id=todo.id) }}">Edit</a>
-               <a href="{{ url_for('tasks.delete', id=todo.id) }}">Delete</a>
-            </div>
-         </ul>
-      </div>
-      {% endfor %} -->

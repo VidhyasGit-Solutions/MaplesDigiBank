@@ -14,3 +14,5 @@ class StatusEnum(PyEnum):
 class AccountTypeEnum(PyEnum):
     CHECKING_ACCOUNT = "CheckingAccount"
     SAVINGS_ACCOUNT = "SavingAccount"
+
+ALLOWED_EXTENSIONS = {"pdf", "jpg", "jpeg", "png"}
