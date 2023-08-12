@@ -1,4 +1,4 @@
-from flask import Blueprint,Response, abort, redirect, render_template, request, url_for, session
+from flask import Blueprint,Response,flash, abort, redirect, render_template, request, url_for, session
 from flask_login import current_user
 from loguru import logger
 from datetime import datetime, timedelta
@@ -175,6 +175,7 @@ def create_application():
                     logger.error(
                         f"Validation error for field '{field}': {error}"
                     )
+                    flash(error)
     if current_user.role_type == "employee":
         return render_template(
             "create_employee_application.html", form=form, employee=True
