@@ -6,6 +6,11 @@ from wtforms.validators import DataRequired
 
 
 class CustomerForm(FlaskForm):
+    """
+    Form class to capture and validate customer-related data for application creation.
+    This form is used to gather information specific to the Customer table in the database.
+    """
+    # Add fields specific to the Customer table
     passport_no = StringField(
         "Passport Number",
         validators=[DataRequired()],
@@ -65,6 +70,10 @@ class CustomerForm(FlaskForm):
 
 
 class EmployeeForm(FlaskForm):
+    """
+    Form class to capture and validate employee-related data for application creation.
+    This form is used to gather information specific to the Employee table in the database.
+    """
     # Add fields specific to the Employee table
     first_name = StringField(
         "First Name",
