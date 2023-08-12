@@ -1,9 +1,16 @@
+"""
+Credit Check View Python Class
+    Includes
+        CreditCheck_CustomerForm - customer_details.html
+        CreditCheck_SubmitForm - CreditCheck_SubmitForm.html
+            - Vidhya Venugopal (8908970)
+"""
 from flask_wtf import FlaskForm
 from wtforms import DateField, FileField, IntegerField, SelectField, StringField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, ValidationError
 from maples_digi_app.login.models import Customer
 
-# from wtforms.validators import ValidationError
+# CreditCheck_CustomerForm
 
 class CreditCheck_CustomerForm(FlaskForm):
     full_name_fetch = StringField(
@@ -45,6 +52,8 @@ class CreditCheck_CustomerForm(FlaskForm):
             raise ValidationError(
                 "Customer does not Exist, Please provide the registered Customer infomration."
             )
+
+# CreditCheck_SubmitForm
 
 class CreditCheck_SubmitForm(FlaskForm):
     credit_score = StringField(

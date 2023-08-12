@@ -22,7 +22,10 @@ from sqlalchemy.exc import IntegrityError
 
 creditchecks = Blueprint("creditchecks", __name__)
 
-
+"""
+   Display of Customer Details
+    - Parameter - sin
+"""
 @creditchecks.route("/customer_details/sin", methods=["GET", "POST"])
 def customer_details():
     print("Inside customer_details")
@@ -67,6 +70,9 @@ def customer_details():
     return render_template(
         "customer_details.html", form=form)
 
+"""
+   Credit Check by hitting Rest API
+"""
 @creditchecks.route("/credit_score_submit", methods=["GET", "POST"])
 def credit_score_submit():
 
@@ -128,6 +134,9 @@ def credit_score_submit():
     return render_template(
         "customer_creditcheck_report.html", form=form, chart_json=chart_json)
 
+"""
+  Save Credit Report in mySQL maplesDigiBank DB
+"""
 @creditchecks.route("/credit_score_save_submit", methods=["POST", "GET"])
 def credit_score_save_submit():
     from maples_digi_app import db

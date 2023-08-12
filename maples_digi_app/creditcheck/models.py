@@ -1,8 +1,17 @@
+"""
+Credit Check Model Python Class
+    Includes
+        Save Credit Report in mySQL maplesDigiBank Cust_CreditScores DB Table
+            - Vidhya Venugopal (8908970)
+"""
 from datetime import datetime
 
 from flask_login import UserMixin
 from maples_digi_app import db
 
+"""
+Cust_CreditScores
+"""
 class Cust_CreditScores(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     userid = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
