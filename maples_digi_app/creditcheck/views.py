@@ -1,3 +1,12 @@
+"""
+Credit Check Control Python Class
+    Includes
+        List of Customer Display
+        Display of Customer Details
+        Credit Check by hitting Rest API
+        Save Credit Report in mySQL maplesDigiBank DB
+            - Vidhya Venugopal (8908970)
+"""
 from flask import Blueprint, redirect, session, render_template, request, url_for, flash
 from flask_login import current_user
 from loguru import logger
