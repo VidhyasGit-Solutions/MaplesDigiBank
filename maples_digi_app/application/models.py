@@ -58,3 +58,13 @@ class Application(db.Model, UserMixin):
             color = "green"
         print(f"********progress {progress}")
         return [progress, color, text_color]
+class Wallet(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.String(50), db.ForeignKey("customer.passport_no"), nullable=False)
+    balance = db.Column(db.Float, default=0.0)  # Add more fields as needed
+
+class WalletTransaction(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    wallet_id = db.Column(db.Integer, db.ForeignKey("wallet.id"), nullable=False)
+    amount = db.Column(db.Float, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)

@@ -9,6 +9,9 @@ from maples_digi_app.login.models import Customer, Employee, UserAssociation
 from maples_digi_app.utils.utils import allowed_file, get_customer_data, get_employee_data
 from sqlalchemy import or_
 from werkzeug.utils import secure_filename
+import qrcode
+from io import BytesIO
+from flask import send_file
 
 
 applications = Blueprint("applications", __name__)
@@ -358,3 +361,44 @@ def withdraw_application(id, customer_id):
     return render_template(
         "delete_application.html", application_type=application.application_type
     )
+
+@applications.route("/wallet")
+def wallet():
+    customer = get_customer_data()
+    if customer:
+        wallet = Wallet.query.filter_by(customer_id=customer.passport_no).first()
+        return render_template("wallet.html", customer=customer, wallet=wallet)
+    return render_template("wallet.html", customer=None, wallet=None)
+
+@applications.route("/recharge_wallet/<float:amount>")
+def recharge_wallet(amount):
+    customer = get_customer_data()
+    if customer:
+        wallet = Wallet.query.filter_by(customer_id=customer.passport_no).first()
+        if wallet:
+            wallet.balance += amount
+            db.session.commit()
+    return redirect(url_for("applications.wallet"))
+@applications.route("/generate_qr_code")
+def generate_qr_code():
+    customer = get_customer_data()
+    if customer:
+        wallet = Wallet.query.filter_by(customer_id=customer.passport_no).first()
+        if wallet:
+            transaction_details = f"Recipient: Maple Digi Bank\nAmount: $10"  # Example transaction details
+            qr = qrcode.QRCode(
+                version=1,
+                error_correction=qrcode.constants.ERROR_CORRECT_L,
+                box_size=10,
+                border=4,
+            )
+            qr.add_data(transaction_details)
+            qr.make(fit=True)
+
+            img = qr.make_image(fill_color="black", back_color="white")
+            img_stream = BytesIO()
+            img.save(img_stream, format="PNG")
+            img_stream.seek(0)
+
+            return send_file(img_stream, mimetype="image/png")
+    return "Error generating QR code."

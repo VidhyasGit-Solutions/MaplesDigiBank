@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% if customer %}
+    <h2>Welcome, {{ customer.first_name }} {{ customer.last_name }}</h2>
+    <p>Your Wallet Balance: ${{ wallet.balance }}</p>
+    < <a href="{{ url_for('applications.recharge_wallet', amount=10) }}" class="btn btn-primary">Recharge $10</a>
+    <a href="{{ url_for('applications.display_qr_code') }}" class="btn btn-secondary">Display QR Code</a>
+    <!-- Other content... -->
+  {% else %}
+    <p>No customer found.</p>
+  {% endif %}
+{% endblock %}
